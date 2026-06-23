@@ -52,19 +52,26 @@ opacity:0.95;
 /* HOME BUTTON */
 .home-btn{
 position:absolute;
-top:15px;
-left:15px;
+top:12px;
+left:12px;
 
-padding:6px 12px;
-font-size:13px;
+padding:4px 10px;
+font-size:12px;
+font-weight:bold;
 
 background:white;
 color:black;
+
 border:none;
-border-radius:8px;
+border-radius:7px;
 
 cursor:pointer;
-font-weight:bold;
+opacity:0.9;
+}
+
+.home-btn:hover{
+opacity:1;
+background:#f2f2f2;
 }
 
 /* =========================
@@ -383,7 +390,7 @@ editIndex=-1;
 }else{
 expenses.push(data);
 }
-
+clearExpenseForm();
 renderAll();
 }
 
@@ -440,6 +447,20 @@ members[i].share+=split;
 renderMemberSummary();
 }
 
+function clearExpenseForm(){
+document.getElementById("expName").value = "";
+document.getElementById("amount").value = "";
+document.getElementById("date").value = "";
+document.getElementById("notes").value = "";
+
+/* uncheck all participants */
+document.querySelectorAll("#participants input")
+.forEach(x => x.checked = false);
+
+/* reset payer dropdown */
+document.getElementById("payer").selectedIndex = 0;
+}
+   
 function renderMemberSummary(){
 let box=document.getElementById("memberSummary");
 box.innerHTML="";
