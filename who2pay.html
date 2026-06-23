@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>who2Pay - my2L</title>
+
+
+<style>
+
+
+*{
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+
+body{
+
+    background:#f5f7fb;
+    margin:0;
+    padding:20px;
+
+}
+
+
+.container{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+
+
+h1{
+
+    text-align:center;
+    color:#4f46e5;
+
+}
+
+
+.card{
+
+    background:white;
+
+    padding:20px;
+
+    margin:20px 0;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+}
+
+
+input,select,button{
+
+    padding:10px;
+
+    margin:5px;
+
+}
+
+
+
+button{
+
+    border:none;
+
+    background:#4f46e5;
+
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+    background:#372fc7;
+
+}
+
+
+
+.person{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    background:#eee;
+
+    padding:8px;
+
+    margin:5px;
+
+    border-radius:8px;
+
+}
+
+
+
+.expense{
+
+    background:#fafafa;
+
+    padding:10px;
+
+    margin:10px 0;
+
+    border-radius:10px;
+
+}
+
+
+
+.result{
+
+    font-size:18px;
+
+    padding:10px;
+
+}
+
+
+
+.green{
+
+    color:green;
+
+}
+
+
+.red{
+
+    color:red;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>👥 who2Pay</h1>
+
+<p style="text-align:center">
+Who owes who, and how much?
+</p>
+
+
+
+
+<div class="card">
+
+
+<h2>1. Group Setup</h2>
+
+
+<input id="personName" placeholder="Enter name">
+
+
+<button onclick="addPerson()">
+Add Person
+</button>
+
+
+<div id="peopleList"></div>
+
+
+</div>
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>2. Add Expense</h2>
+
+
+<input 
+type="number"
+id="amount"
+placeholder="Amount ₱"
+>
+
+
+
+<select id="payer">
+
+<option>
+Select payer
+</option>
+
+</select>
+
+
+
+<h3>Shared By:</h3>
+
+
+<div id="participantList"></div>
+
+
+<button onclick="addExpense()">
+Add Expense
+</button>
+
+
+<div id="expenseList"></div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="card">
+
+
+<h2>3. Result</h2>
+
+
+<button onclick="calculate()">
+
+Calculate Settlement
+
+</button>
+
+
+<div id="result"></div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+
+let people=[];
+
+
+let expenses=[];
+
+
+
+function addPerson(){
+
+
+let name=document.getElementById("personName").value;
+
+
+if(name=="") return;
+
+
+
+people.push({
+
+name:name,
+
+paid:0,
+
+share:0,
+
+balance:0
+
+});
+
+
+
+document.getElementById("personName").value="";
+
+
+refresh();
+
+
+}
+
+
+
+
+
+
+function removePerson(index){
+
+
+people.splice(index,1);
+
+
+refresh();
+
+
+}
+
+
+
+
+
+
+
+
+function refresh(){
+
+
+let list=document.getElementById("peopleList");
+
+let payer=document.getElementById("payer");
+
+let participants=document.getElementById("participantList");
+
+
+
+list.innerHTML="";
+
+payer.innerHTML="<option>Select payer</option>";
+
+participants.innerHTML="";
+
+
+
+
+people.forEach((p,i)=>{
+
+
+list.innerHTML += `
+
+<div class="person">
+
+${p.name}
+
+<button onclick="removePerson(${i})">
+X
+</button>
+
+</div>
+
+`;
+
+
+
+payer.innerHTML += `
+
+<option value="${i}">
+${p.name}
+</option>
+
+`;
+
+
+
+participants.innerHTML += `
+
+<label>
+
+<input type="checkbox" value="${i}">
+
+${p.name}
+
+</label><br>
+
+`;
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+function addExpense(){
+
+
+
+let amount=
+Number(document.getElementById("amount").value);
+
+
+
+let payer=
+Number(document.getElementById("payer").value);
+
+
+
+let checked=
+document.querySelectorAll("#participantList input:checked");
+
+
+
+let participants=[];
+
+
+
+checked.forEach(c=>{
+
+participants.push(Number(c.value));
+
+});
+
+
+
+
+
+if(!amount || participants.length==0) return;
+
+
+
+
+
+expenses.push({
+
+amount:amount,
+
+payer:payer,
+
+participants:participants
+
+});
+
+
+
+
+showExpenses();
+
+
+
+}
+
+
+
+
+
+
+
+
+function showExpenses(){
+
+
+let box=document.getElementById("expenseList");
+
+
+box.innerHTML="";
+
+
+
+expenses.forEach(e=>{
+
+
+box.innerHTML += `
+
+<div class="expense">
+
+₱${e.amount}
+
+paid by ${people[e.payer].name}
+
+<br>
+
+Shared by:
+
+${e.participants.map(i=>people[i].name).join(", ")}
+
+</div>
+
+
+`;
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+
+function calculate(){
+
+
+
+people.forEach(p=>{
+
+
+p.paid=0;
+
+p.share=0;
+
+
+});
+
+
+
+
+
+
+
+expenses.forEach(e=>{
+
+
+
+let split=
+e.amount/e.participants.length;
+
+
+
+people[e.payer].paid += e.amount;
+
+
+
+
+e.participants.forEach(i=>{
+
+
+people[i].share += split;
+
+
+});
+
+
+
+});
+
+
+
+
+
+
+
+people.forEach(p=>{
+
+
+p.balance=
+p.paid-p.share;
+
+
+});
+
+
+
+
+
+
+let result=
+document.getElementById("result");
+
+
+
+result.innerHTML="";
+
+
+
+
+
+people.forEach(p=>{
+
+
+let type=
+p.balance>=0
+?
+"should receive"
+:
+"owes";
+
+
+
+result.innerHTML += `
+
+<p>
+
+<b>${p.name}</b>
+
+${type}
+
+₱${Math.abs(p.balance).toFixed(2)}
+
+</p>
+
+`;
+
+});
+
+
+
+
+result.innerHTML += "<hr><h3>Settlement:</h3>";
+
+
+
+
+
+
+let debtors=
+people.filter(p=>p.balance<0);
+
+
+
+let creditors=
+people.filter(p=>p.balance>0);
+
+
+
+
+
+let i=0;
+let j=0;
+
+
+
+
+while(i<debtors.length && j<creditors.length){
+
+
+
+let debtor=debtors[i];
+
+let creditor=creditors[j];
+
+
+
+let amount=
+Math.min(
+Math.abs(debtor.balance),
+creditor.balance
+);
+
+
+
+
+
+result.innerHTML += `
+
+<p class="red">
+
+${debtor.name}
+
+pays
+
+${creditor.name}
+
+₱${amount.toFixed(2)}
+
+</p>
+
+
+`;
+
+
+
+
+debtor.balance += amount;
+
+creditor.balance -= amount;
+
+
+
+if(debtor.balance==0) i++;
+
+if(creditor.balance==0) j++;
+
+
+
+}
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
