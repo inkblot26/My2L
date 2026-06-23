@@ -468,9 +468,6 @@ debts[p][payer] += split;
 
 });
 
-// optional: clean opposite debts (cancellation)
-simplifyDebts();
-
 renderSettlement();
 }
 
@@ -538,12 +535,14 @@ members.forEach(to=>{
 
 let amt = debts[from.name][to.name];
 
-if(amt > 0){
+if(amt > 0.0001){
+
 box.innerHTML += `
 <p class="red">
 ${from.name} pays ${to.name} ₱${amt.toFixed(2)}
 </p>
 `;
+
 }
 
 });
