@@ -449,24 +449,26 @@ renderAll();
 
 function calculate(){
 
-// reset debts
 initDebts();
 
+// STEP 1: build exact pairwise debts per expense
 expenses.forEach(e=>{
 
-let payer = members[e.payer].name;
-let participants = e.selected.map(i => members[i].name);
+    let payer = members[e.payer].name;
+    let participants = e.selected.map(i => members[i].name);
 
-let split = e.amount / participants.length;
+    let split = e.amount / participants.length;
 
-// each participant owes payer
-participants.forEach(p => {
-if(p !== payer){
-debts[p][payer] += split;
-}
+    participants.forEach(p => {
+
+        if(p !== payer){
+            debts[p][payer] += split;
+        }
+    });
 });
 
-});
+// STEP 2: cancel mutual debts PER PAIR (IMPORTANT FIX)
+simplifyDebts();
 
 renderSettlement();
 }
@@ -475,21 +477,22 @@ function simplifyDebts(){
 
 members.forEach(a=>{
 members.forEach(b=>{
-if(a.name === b.name) return;
 
-let ab = debts[a.name][b.name];
-let ba = debts[b.name][a.name];
+    if(a.name === b.name) return;
 
-if(ab > 0 && ba > 0){
+    let ab = debts[a.name][b.name];
+    let ba = debts[b.name][a.name];
 
-let min = Math.min(ab, ba);
+    if(ab > 0 && ba > 0){
 
-debts[a.name][b.name] -= min;
-debts[b.name][a.name] -= min;
+        let min = Math.min(ab, ba);
+
+        debts[a.name][b.name] -= min;
+        debts[b.name][a.name] -= min;
+    }
+});
+});
 }
-});
-});
-}   
 
 function clearExpenseForm(){
 document.getElementById("expName").value = "";
@@ -535,14 +538,13 @@ members.forEach(to=>{
 
 let amt = debts[from.name][to.name];
 
-if(amt > 0.0001){
+if(amt > 0.01){
 
 box.innerHTML += `
 <p class="red">
 ${from.name} pays ${to.name} ₱${amt.toFixed(2)}
 </p>
 `;
-
 }
 
 });
