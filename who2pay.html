@@ -482,29 +482,50 @@ Share: ₱${m.share.toFixed(2)}<br>
 }
 
 function renderSettlement(){
-let box=document.getElementById("settlement");
-box.innerHTML="";
 
-let debtors=members.filter(m=>m.balance<0);
-let creditors=members.filter(m=>m.balance>0);
+let box = document.getElementById("settlement");
+box.innerHTML = "";
 
-let i=0,j=0;
+/* STEP 1: create clean arrays */
+let debtors = [];
+let creditors = [];
 
-while(i<debtors.length && j<creditors.length){
+members.forEach(m => {
+let bal = Number(m.balance.toFixed(2)); // fix floating errors
 
-let amt=Math.min(Math.abs(debtors[i].balance),creditors[j].balance);
+if(bal < 0){
+debtors.push({ name: m.name, amount: -bal });
+}
+else if(bal > 0){
+creditors.push({ name: m.name, amount: bal });
+}
+});
 
-box.innerHTML+=`
+/* STEP 2: pointer system */
+let i = 0;
+let j = 0;
+
+while(i < debtors.length && j < creditors.length){
+
+let d = debtors[i];
+let c = creditors[j];
+
+let pay = Math.min(d.amount, c.amount);
+
+/* OUTPUT */
+box.innerHTML += `
 <p class="red">
-${debtors[i].name} pays ${creditors[j].name} ₱${amt.toFixed(2)}
+${d.name} pays ${c.name} ₱${pay.toFixed(2)}
 </p>
 `;
 
-debtors[i].balance+=amt;
-creditors[j].balance-=amt;
+/* UPDATE */
+d.amount -= pay;
+c.amount -= pay;
 
-if(debtors[i].balance===0) i++;
-if(creditors[j].balance===0) j++;
+/* MOVE POINTERS */
+if(d.amount === 0) i++;
+if(c.amount === 0) j++;
 }
 }
 
