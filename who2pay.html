@@ -327,13 +327,15 @@ my2L © 2026 | Simple Tools For Everyday Life
 let members = [];
 let expenses = [];
 let editIndex = -1;
-
+let debts = {};
+   
 function addMember(){
 let name=document.getElementById("memberName").value;
 if(!name) return;
 
-members.push({name,paid:0,share:0,balance:0});
+members.push({name});
 document.getElementById("memberName").value="";
+initDebts();
 renderAll();
 }
 
@@ -344,6 +346,19 @@ renderExpenses();
 calculate();
 renderSettlement();
 }
+
+function initDebts(){
+debts = {};
+
+members.forEach(m1=>{
+    debts[m1.name] = {};
+    members.forEach(m2=>{
+        if(m1.name !== m2.name){
+            debts[m1.name][m2.name] = 0;
+        }
+    });
+});
+}   
 
 function renderMembers(){
 let box=document.getElementById("members");
@@ -433,19 +448,51 @@ renderAll();
 }
 
 function calculate(){
-members.forEach(m=>{m.paid=0;m.share=0;});
+
+// reset debts
+initDebts();
 
 expenses.forEach(e=>{
-let split=e.amount/e.selected.length;
-members[e.payer].paid+=e.amount;
 
-e.selected.forEach(i=>{
-members[i].share+=split;
-});
-});
+let payer = members[e.payer].name;
+let participants = e.selected.map(i => members[i].name);
 
-renderMemberSummary();
+let split = e.amount / participants.length;
+
+// each participant owes payer
+participants.forEach(p => {
+if(p !== payer){
+debts[p][payer] += split;
 }
+});
+
+});
+
+// optional: clean opposite debts (cancellation)
+simplifyDebts();
+
+renderSettlement();
+}
+
+function simplifyDebts(){
+
+members.forEach(a=>{
+members.forEach(b=>{
+if(a.name === b.name) return;
+
+let ab = debts[a.name][b.name];
+let ba = debts[b.name][a.name];
+
+if(ab > 0 && ba > 0){
+
+let min = Math.min(ab, ba);
+
+debts[a.name][b.name] -= min;
+debts[b.name][a.name] -= min;
+}
+});
+});
+}   
 
 function clearExpenseForm(){
 document.getElementById("expName").value = "";
@@ -486,47 +533,22 @@ function renderSettlement(){
 let box = document.getElementById("settlement");
 box.innerHTML = "";
 
-/* STEP 1: create clean arrays */
-let debtors = [];
-let creditors = [];
+members.forEach(from=>{
+members.forEach(to=>{
 
-members.forEach(m => {
-let bal = Number(m.balance.toFixed(2)); // fix floating errors
+let amt = debts[from.name][to.name];
 
-if(bal < 0){
-debtors.push({ name: m.name, amount: -bal });
-}
-else if(bal > 0){
-creditors.push({ name: m.name, amount: bal });
-}
-});
-
-/* STEP 2: pointer system */
-let i = 0;
-let j = 0;
-
-while(i < debtors.length && j < creditors.length){
-
-let d = debtors[i];
-let c = creditors[j];
-
-let pay = Math.min(d.amount, c.amount);
-
-/* OUTPUT */
+if(amt > 0){
 box.innerHTML += `
 <p class="red">
-${d.name} pays ${c.name} ₱${pay.toFixed(2)}
+${from.name} pays ${to.name} ₱${amt.toFixed(2)}
 </p>
 `;
-
-/* UPDATE */
-d.amount -= pay;
-c.amount -= pay;
-
-/* MOVE POINTERS */
-if(d.amount === 0) i++;
-if(c.amount === 0) j++;
 }
+
+});
+});
+
 }
 
 </script>
