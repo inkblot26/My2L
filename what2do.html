@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What2Do - my2L</title>
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#333;
+line-height:1.5;
+}
+
+/* =========================
+   HEADER
+========================= */
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .what{color:white;}
+.title .do{color:#ffd700;}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+opacity:0.95;
+}
+
+/* HOME BUTTON */
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+
+padding:4px 8px;
+font-size:11px;
+
+background:white;
+color:black;
+
+border:none;
+border-radius:6px;
+
+cursor:pointer;
+opacity:0.85;
+width:auto;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container{
+max-width:1000px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:white;
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   TEXT
+========================= */
+h2{
+font-size:22px;
+margin-bottom:5px;
+}
+
+.helper{
+font-size:14px;
+color:#666;
+margin-top:6px;
+margin-bottom:10px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input{
+width:100%;
+padding:12px;
+margin:6px 0;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+
+background:#4f46e5;
+color:white;
+
+border:none;
+border-radius:10px;
+
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+}
+
+button:hover{
+background:#372fc7;
+}
+
+/* SMALL BUTTON */
+.small-btn{
+width:auto;
+padding:6px 10px;
+font-size:12px;
+border-radius:8px;
+margin-top:5px;
+}
+
+/* =========================
+   OPTION LIST
+========================= */
+.option{
+background:#eef0ff;
+padding:10px;
+margin:6px 0;
+border-radius:10px;
+font-weight:500;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* =========================
+   RESULT
+========================= */
+.result{
+background:#fff7cc;
+padding:15px;
+border-radius:12px;
+font-size:18px;
+font-weight:bold;
+text-align:center;
+margin-top:10px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer{
+margin-top:50px;
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+font-size:13px;
+border-top:3px solid #111;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width:768px){
+
+.title{font-size:32px;}
+.subtitle{font-size:14px;}
+.container{padding:15px;}
+.card{padding:18px;}
+h2{font-size:18px;}
+button{font-size:14px;}
+input{font-size:14px;padding:10px;}
+.small-btn{font-size:11px;}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<button class="home-btn" onclick="location.href='index.html'">
+Home
+</button>
+
+<div class="title">
+<span class="what">What</span><span class="do">2Do</span>
+</div>
+
+<p class="subtitle">
+Can't decide? Add options and let the system choose for you.
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- ADD OPTIONS -->
+<div class="card">
+<h2>Add Options</h2>
+<p class="helper">Type choices like "eat out", "study", "sleep", etc.</p>
+
+<input id="optionInput" placeholder="Enter option">
+<button onclick="addOption()">Add Option</button>
+
+<div id="optionList"></div>
+</div>
+
+<!-- PICK -->
+<div class="card">
+<h2>Decision Maker</h2>
+<p class="helper">Click the button to randomly choose one option.</p>
+
+<button onclick="pickOption()">🎲 Pick Me</button>
+
+<div id="result" class="result" style="display:none;"></div>
+</div>
+
+</div>
+
+<div class="footer">
+my2L © 2026 | Simple Tools For Everyday Life
+</div>
+
+<script>
+
+let options = [];
+
+function addOption(){
+
+let val = document.getElementById("optionInput").value;
+
+if(!val) return;
+
+options.push(val);
+document.getElementById("optionInput").value = "";
+
+renderOptions();
+}
+
+function renderOptions(){
+
+let box = document.getElementById("optionList");
+box.innerHTML = "";
+
+options.forEach((o,i)=>{
+
+box.innerHTML += `
+<div class="option">
+${o}
+<button class="small-btn" onclick="removeOption(${i})">Remove</button>
+</div>
+`;
+
+});
+
+}
+
+function removeOption(i){
+options.splice(i,1);
+renderOptions();
+}
+
+function pickOption(){
+
+if(options.length === 0) return;
+
+let random = Math.floor(Math.random() * options.length);
+
+let result = options[random];
+
+let box = document.getElementById("result");
+
+box.style.display = "block";
+box.innerHTML = "🎯 You should: " + result;
+
+}
+
+</script>
+
+</body>
+</html>
