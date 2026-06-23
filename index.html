@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>my2L - myTool</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+body{
+    background:#f5f7fb;
+    color:#333;
+}
+
+
+/* HEADER */
+
+header{
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:white;
+    padding:60px 20px;
+    text-align:center;
+}
+
+
+header h1{
+    font-size:50px;
+}
+
+
+header span{
+    color:#ffd700;
+}
+
+
+header p{
+    margin-top:15px;
+    font-size:20px;
+}
+
+
+/* INTRO */
+
+.intro{
+
+    max-width:900px;
+    margin:40px auto;
+    text-align:center;
+    padding:20px;
+
+}
+
+
+.intro h2{
+
+    font-size:30px;
+    margin-bottom:15px;
+
+}
+
+
+.intro p{
+
+    font-size:18px;
+    line-height:1.6;
+
+}
+
+
+/* TOOL CONTAINER */
+
+.tools{
+
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+}
+
+
+/* CARD */
+
+.card{
+
+    background:white;
+    border-radius:15px;
+    padding:25px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
+    transition:0.3s;
+
+}
+
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+
+.card h3{
+
+    color:#4f46e5;
+    margin-bottom:10px;
+
+}
+
+
+.card p{
+
+    min-height:60px;
+
+}
+
+
+button{
+
+    margin-top:15px;
+
+    width:100%;
+    padding:12px;
+
+    border:none;
+
+    background:#4f46e5;
+    color:white;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+
+button:hover{
+
+    background:#372fc7;
+
+}
+
+
+/* FOOTER */
+
+
+footer{
+
+    margin-top:50px;
+
+    background:#222;
+
+    color:white;
+
+    text-align:center;
+
+    padding:20px;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<h1>my<span>2L</span></h1>
+
+<p>Your Everyday Problem Solver Toolkit</p>
+
+</header>
+
+
+
+
+<section class="intro">
+
+<h2>What is my2L?</h2>
+
+<p>
+my2L (myTool) is a collection of simple tools designed to help with
+daily decisions, organization, calculations, reminders, and everyday tasks.
+</p>
+
+</section>
+
+
+
+
+<section class="tools">
+
+
+
+<div class="card">
+
+<h3>👥 who2Pay</h3>
+
+<p>
+Split group expenses and easily know who owes who.
+</p>
+
+<button onclick="location.href='who2pay.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+<div class="card">
+
+<h3>🍳 What2Eat</h3>
+
+<p>
+Find meals based on your available ingredients and get recipes.
+</p>
+
+<button onclick="location.href='what2eat.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>💡 When2Bill</h3>
+
+<p>
+Track bills, payments, due dates, and monthly expenses.
+</p>
+
+<button onclick="location.href='when2bill.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>📏 What2Length</h3>
+
+<p>
+Use your phone as a measurement reference and convert lengths.
+</p>
+
+<button onclick="location.href='what2length.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>🎒 What2Bring</h3>
+
+<p>
+Create smart checklists based on your situation.
+</p>
+
+<button onclick="location.href='what2bring.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>🛒 What2Buy</h3>
+
+<p>
+Manage shopping lists and track purchased items.
+</p>
+
+<button onclick="location.href='what2buy.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>🧠 What2Remember</h3>
+
+<p>
+Save notes, reminders, and important information.
+</p>
+
+<button onclick="location.href='what2remember.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>🎲 What2Do</h3>
+
+<p>
+Can't decide? Input choices and let my2L choose for you.
+</p>
+
+<button onclick="location.href='what2do.html'">
+Open Tool
+</button>
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+<footer>
+
+<p>
+my2L © 2026 | Simple Tools For Everyday Life
+</p>
+
+</footer>
+
+
+
+</body>
+</html>
