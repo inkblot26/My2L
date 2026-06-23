@@ -27,18 +27,24 @@ text-align:center;
 position:relative;
 }
 
-/* TOP LEFT BUTTON */
+/* SMALL HOME BUTTON */
 .home-btn{
 position:absolute;
 top:20px;
 left:20px;
-padding:8px 14px;
+
+width:auto;           /* FIX: prevents full width */
+padding:6px 12px;
+
 background:white;
 color:#4f46e5;
+
 border:none;
 border-radius:8px;
+
 cursor:pointer;
 font-weight:bold;
+font-size:14px;
 }
 
 .home-btn:hover{
@@ -81,8 +87,8 @@ border-radius:15px;
 box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
-/* INPUTS */
-input,select,textarea,button{
+/* INPUTS (IMPORTANT FIX: only inputs, not buttons) */
+input,select,textarea{
 width:100%;
 padding:10px;
 margin:5px 0;
@@ -95,6 +101,7 @@ color:white;
 border:none;
 border-radius:8px;
 cursor:pointer;
+padding:10px;
 }
 
 button:hover{
