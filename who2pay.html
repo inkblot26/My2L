@@ -124,12 +124,6 @@ padding:10px;
 margin:10px 0;
 border-radius:10px;
 }
-  
-#participants{
-margin-bottom:20px;
-padding-bottom:5px;
-}
-  
 
 /* COLORS */
 .red{ color:#dc2626; }
@@ -156,13 +150,19 @@ margin-top:10px;
 font-weight:bold;
 }
 
+#participants{
+margin-bottom:20px;
+padding-bottom:5px;
+}
+
+/* FOOTER */
 .footer{
 text-align:center;
 color:#777;
 font-size:13px;
-padding:20px;
-margin-top:30px;
-}  
+padding:25px;
+margin-top:40px;
+}
 
 </style>
 
@@ -187,6 +187,7 @@ Split group expenses and easily know who owes who.
 
 </header>
 
+<!-- MAIN CONTENT -->
 <div class="container">
 
 <!-- MEMBERS -->
@@ -202,27 +203,23 @@ Split group expenses and easily know who owes who.
 
 </div>
 
-<!-- EXPENSE INPUT (RESTRUCTURED) -->
+<!-- EXPENSE -->
 <div class="card">
 
 <h2>Add Expense</h2>
 <p class="helper">Enter all expense details, then select who paid and who participated.</p>
 
-<!-- EXPENSE INFO -->
 <div class="section-title">Expense Info</div>
-<p class="helper">
-Describe the expense clearly. This will be used to calculate and track the cost.
-</p>
-  
+<p class="helper">Describe the expense clearly. This will be used to calculate and track the cost.</p>
+
 <input id="expName" placeholder="Expense name">
 <input id="amount" type="number" placeholder="Amount ₱">
 <input id="date" type="date">
 <textarea id="notes" placeholder="Notes (optional)"></textarea>
 
-<!-- PEOPLE -->
 <div class="section-title">People</div>
 
-<p class="helper">Who paid for this expense</p>  
+<p class="helper">Who paid for this expense</p>
 <select id="payer"></select>
 
 <p class="helper">Select everyone involved (cost will be split equally)</p>
@@ -250,11 +247,11 @@ Describe the expense clearly. This will be used to calculate and track the cost.
 <div id="settlement"></div>
 </div>
 
-<!-- FOOTER (ADD THIS HERE) -->
+</div>
+
+<!-- FOOTER (OUTSIDE CONTAINER — FIXED) -->
 <div class="footer">
 my2L © 2026 | Simple Tools For Everyday Life
-</div>
-  
 </div>
 
 <script>
