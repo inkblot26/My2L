@@ -243,6 +243,7 @@ Can't decide? Add options and let the my2L choose for you.
 <button onclick="pickOption()">🎲 Pick Me</button>
 
 <div id="result" class="result" style="display:none;"></div>
+<button class="small-btn" onclick="clearAll()">Clear All</button>
 </div>
 
 </div>
@@ -304,6 +305,19 @@ box.style.display = "block";
 box.innerHTML = result;
 
 }
+
+function clearAll(){
+
+options = [];
+
+document.getElementById("optionInput").value = "";
+document.getElementById("optionList").innerHTML = "";
+
+let box = document.getElementById("result");
+box.style.display = "none";
+box.innerHTML = "";
+
+}   
 
 </script>
 
