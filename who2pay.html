@@ -509,23 +509,58 @@ document.getElementById("payer").selectedIndex = 0;
 }
    
 function renderMemberSummary(){
+
 let box=document.getElementById("memberSummary");
 box.innerHTML="";
 
-members.forEach(m=>{
-m.balance=m.paid-m.share;
 
-box.innerHTML+=`
+members.forEach((m,index)=>{
+
+
+let html = `
 <div class="member">
-<b>${m.name}</b><br>
-Paid: ₱${m.paid.toFixed(2)}<br>
-Share: ₱${m.share.toFixed(2)}<br>
-<b class="${m.balance>=0?'green':'red'}">
-₱${m.balance.toFixed(2)}
-</b>
+
+<b>${m.name}</b><br><br>
+`;
+
+
+/* find expenses where member is involved */
+expenses.forEach(e=>{
+
+
+if(e.selected.includes(index)){
+
+
+let share = e.amount / e.selected.length;
+
+
+html += `
+<div>
+${e.name} 
+<br>
+Share: ₱${share.toFixed(2)}
+</div>
+
+<br>
+`;
+
+}
+
+
+});
+
+
+html += `
 </div>
 `;
+
+
+box.innerHTML += html;
+
+
 });
+
+
 }
 
 function renderSettlement(){
