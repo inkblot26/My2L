@@ -18,7 +18,7 @@ body{
 background:#f5f7fb;
 }
 
-/* HERO HEADER (like index.html) */
+/* HEADER */
 header{
 background:linear-gradient(135deg,#4f46e5,#7c3aed);
 color:white;
@@ -27,25 +27,12 @@ text-align:center;
 position:relative;
 }
 
-header h1{
-font-size:42px;
-}
-
-header span{
-color:#ffd700;
-}
-
-header p{
-font-size:18px;
-margin-top:10px;
-}
-
-/* HOME BUTTON */
+/* TOP LEFT BUTTON */
 .home-btn{
 position:absolute;
 top:20px;
 left:20px;
-padding:8px 12px;
+padding:8px 14px;
 background:white;
 color:#4f46e5;
 border:none;
@@ -56,6 +43,26 @@ font-weight:bold;
 
 .home-btn:hover{
 background:#eee;
+}
+
+/* TITLE */
+.title{
+font-size:42px;
+font-weight:bold;
+}
+
+.title .who{
+color:white;
+}
+
+.title .pay{
+color:#ffd700;
+}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+opacity:0.95;
 }
 
 /* CONTAINER */
@@ -130,11 +137,16 @@ border-radius:10px;
 <header>
 
 <button class="home-btn" onclick="location.href='index.html'">
-🏠 Home
+my2L
 </button>
 
-<h1>my<span>2L</span></h1>
-<p>👥 who2Pay - Split Expenses Smartly</p>
+<div class="title">
+<span class="who">who</span><span class="pay">2Pay</span>
+</div>
+
+<p class="subtitle">
+Split group expenses and easily know who owes who.
+</p>
 
 </header>
 
@@ -215,7 +227,7 @@ document.getElementById("memberName").value="";
 renderAll();
 }
 
-/* MAIN RENDER */
+/* MASTER RENDER */
 function renderAll(){
 renderMembers();
 renderExpenseForm();
@@ -224,7 +236,7 @@ calculate();
 renderSettlement();
 }
 
-/* MEMBERS UI */
+/* MEMBERS */
 function renderMembers(){
 
 let box = document.getElementById("members");
