@@ -202,7 +202,10 @@ Split group expenses and easily know who owes who.
 
 <!-- EXPENSE INFO -->
 <div class="section-title">Expense Info</div>
-
+<p class="helper">
+Describe the expense clearly. This will be used to calculate and track the cost.
+</p>
+  
 <input id="expName" placeholder="Expense name">
 <input id="amount" type="number" placeholder="Amount ₱">
 <input id="date" type="date">
@@ -211,13 +214,10 @@ Split group expenses and easily know who owes who.
 <!-- PEOPLE -->
 <div class="section-title">People</div>
 
-<p class="helper">
-Select who paid for this expense, and choose all people who are part of it.
-The cost will be split equally among selected participants.
-</p>
+<p class="helper">Who paid for this expense</p>  
+<select id="payer"></select>
 
-<select id="payer"></select>  
-
+<p class="helper">Select everyone involved (cost will be split equally)</p>
 <div id="participants"></div>
 
 <button onclick="addExpense()">Add / Update Expense</button>
