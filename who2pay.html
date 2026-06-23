@@ -52,21 +52,21 @@ opacity:0.95;
 /* HOME BUTTON */
 .home-btn{
 position:absolute;
-top:12px;
-left:12px;
+top:8px;
+left:8px;
 
-padding:4px 10px;
-font-size:12px;
-font-weight:bold;
+width:auto;
+padding:4px 8px;
+font-size:11px;
 
 background:white;
 color:black;
 
 border:none;
-border-radius:7px;
+border-radius:6px;
 
 cursor:pointer;
-opacity:0.9;
+opacity:0.85;
 }
 
 .home-btn:hover{
@@ -521,28 +521,21 @@ members.forEach((m,index)=>{
 let html = `
 <div class="member">
 
-<b>${m.name}</b><br><br>
+<b>${m.name}</b><br>
 `;
 
 
-/* find expenses where member is involved */
 expenses.forEach(e=>{
 
 
 if(e.selected.includes(index)){
 
 
-let share = e.amount / e.selected.length;
-
-
 html += `
 <div>
 ${e.name} 
-<br>
-Share: ₱${share.toFixed(2)}
+(₱${e.amount} - ${e.date || "No date"} - ${e.notes || "No note"})
 </div>
-
-<br>
 `;
 
 }
