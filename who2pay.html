@@ -344,6 +344,7 @@ renderMembers();
 renderExpenseForm();
 renderExpenses();
 calculate();
+renderMemberSummary();
 renderSettlement();
 }
 
@@ -469,7 +470,7 @@ expenses.forEach(e=>{
 
 // STEP 2: cancel mutual debts PER PAIR (IMPORTANT FIX)
 simplifyDebts();
-
+renderMemberSummary();
 renderSettlement();
 }
 
