@@ -124,159 +124,13 @@ font-size:13px;
 <h2>⏰ Set Alarm</h2>
 
 <input type="time" id="alarmTime">
-<button onclick="setAlarm()">Set Alarm</button>
 
-<p id="status"></p>
-</div>
-
-<!-- CHALLENGE -->
-<div class="card">
-<h2>🔴 Wake Up Challenge</h2>
-<div id="questions"></div>
-
-<button onclick="checkAnswers()">Stop Alarm</button>
-
-<div id="result" class="result"></div>
-</div>
-
-</div>
-
-<div class="footer">
-my2L © 2026
-</div>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>How2Wake - my2L</title>
-
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-background:#f5f7fb;
-color:#333;
-}
-
-header{
-background:linear-gradient(135deg,#4f46e5,#7c3aed);
-color:white;
-padding:50px 20px;
-text-align:center;
-position:relative;
-}
-
-.title{font-size:44px;font-weight:bold;}
-.title .how{color:white;}
-.title .wake{color:#ffd700;}
-
-.home-btn{
-position:absolute;
-top:8px;
-left:8px;
-padding:4px 8px;
-font-size:11px;
-background:white;
-color:black;
-border:none;
-border-radius:6px;
-cursor:pointer;
-width:auto;
-}
-
-.container{
-max-width:800px;
-margin:auto;
-padding:25px;
-}
-
-.card{
-background:white;
-padding:25px;
-margin:20px 0;
-border-radius:16px;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
-}
-
-input{
-width:100%;
-padding:12px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
-button{
-width:100%;
-padding:12px;
-margin-top:10px;
-background:#4f46e5;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-button:hover{
-background:#372fc7;
-}
-
-.result{
-margin-top:15px;
-padding:15px;
-border-radius:12px;
-text-align:center;
-font-weight:bold;
-}
-
-.red{color:#dc2626;}
-.green{color:#16a34a;}
-
-.footer{
-margin-top:50px;
-background:#222;
-color:white;
-text-align:center;
-padding:20px;
-font-size:13px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-<button class="home-btn" onclick="location.href='index.html'">Home</button>
-
-<div class="title">
-<span class="how">How</span><span class="wake">2Wake</span>
-</div>
-
-<p>Set alarm → Solve 3 problems to stop it</p>
-</header>
-
-<div class="container">
-
-<!-- SET ALARM -->
-<div class="card">
-<h2>⏰ Set Alarm</h2>
-
-<input type="time" id="alarmTime">
 <button onclick="setAlarm()">Set Alarm</button>
 
 <button onclick="clearAll()" style="background:#dc2626;">
-Clear All
+🗑 Clear All
 </button>
-  
+
 <p id="status"></p>
 </div>
 
@@ -300,16 +154,23 @@ my2L © 2026
 
 let alarmTime = null;
 let alarmTriggered = false;
+let alarmFiredFor = null;
+
+let interval = null;
+
 let problems = [];
 
-// simple alarm sound
 let audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
 
 function setAlarm(){
+
 alarmTime = document.getElementById("alarmTime").value;
 document.getElementById("status").innerText = "Alarm set for " + alarmTime;
 
-setInterval(checkAlarm, 1000);
+// stop old interval (IMPORTANT FIX)
+if(interval) clearInterval(interval);
+
+interval = setInterval(checkAlarm, 1000);
 }
 
 function checkAlarm(){
@@ -319,18 +180,21 @@ if(alarmTriggered || !alarmTime) return;
 let now = new Date();
 let current = now.toTimeString().slice(0,5);
 
-if(current === alarmTime){
+// prevent double trigger
+if(current === alarmTime && alarmFiredFor !== alarmTime){
 triggerAlarm();
+alarmFiredFor = alarmTime;
 }
 }
 
 function triggerAlarm(){
 
 alarmTriggered = true;
+
 audio.loop = true;
 audio.play();
 
-// generate 3 math problems (+ and - only)
+// generate 3 problems (+ and - only)
 problems = [];
 
 for(let i=0;i<3;i++){
@@ -397,6 +261,25 @@ result.innerHTML = "❌ Wrong answers!";
 result.className = "result red";
 }
 
+}
+
+function clearAll(){
+
+alarmTime = null;
+alarmTriggered = false;
+alarmFiredFor = null;
+
+problems = [];
+
+document.getElementById("alarmTime").value = "";
+document.getElementById("status").innerText = "";
+document.getElementById("questions").innerHTML = "";
+document.getElementById("result").innerHTML = "";
+
+audio.pause();
+audio.currentTime = 0;
+
+if(interval) clearInterval(interval);
 }
 
 </script>
