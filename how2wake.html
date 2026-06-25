@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>How2Wake - my2L</title>
+
+<style>
+
+/* =========================
+   BASE (same style system)
+========================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#333;
+line-height:1.5;
+}
+
+/* =========================
+   HEADER
+========================= */
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .how{color:white;}
+.title .wake{color:#ffd700;}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+opacity:0.95;
+}
+
+/* HOME BUTTON */
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+
+padding:4px 8px;
+font-size:11px;
+
+background:white;
+color:black;
+
+border:none;
+border-radius:6px;
+
+cursor:pointer;
+opacity:0.85;
+width:auto;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.container{
+max-width:800px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:white;
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   TEXT
+========================= */
+h2{
+font-size:22px;
+margin-bottom:5px;
+}
+
+.helper{
+font-size:14px;
+color:#666;
+margin-bottom:10px;
+}
+
+/* =========================
+   INPUT
+========================= */
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+
+cursor:pointer;
+font-size:15px;
+font-weight:bold;
+}
+
+button:hover{
+background:#372fc7;
+}
+
+/* =========================
+   RESULT
+========================= */
+.result{
+margin-top:15px;
+padding:15px;
+border-radius:12px;
+font-weight:bold;
+text-align:center;
+font-size:16px;
+}
+
+/* =========================
+   COLORS
+========================= */
+.red{color:#dc2626;}
+.green{color:#16a34a;}
+
+.footer{
+margin-top:50px;
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+font-size:13px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<button class="home-btn" onclick="location.href='index.html'">
+Home
+</button>
+
+<div class="title">
+<span class="how">How</span><span class="wake">2Wake</span>
+</div>
+
+<p class="subtitle">
+Solve 3 problems to turn off the alarm.
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- ALARM -->
+<div class="card">
+<h2>🔴 Alarm Active</h2>
+<p class="helper">Solve all 3 math problems to stop the alarm.</p>
+
+<div id="questions"></div>
+
+<button onclick="checkAnswers()">Stop Alarm</button>
+
+<div id="result" class="result"></div>
+
+</div>
+
+</div>
+
+<div class="footer">
+my2L © 2026 | Simple Tools For Everyday Life
+</div>
+
+<script>
+
+let problems = [];
+
+// generate 3 math problems
+function generateProblems(){
+
+problems = [];
+
+for(let i=0;i<3;i++){
+
+let a = Math.floor(Math.random()*20)+1;
+let b = Math.floor(Math.random()*20)+1;
+let op = ["+","-","*"][Math.floor(Math.random()*3)];
+
+let answer;
+
+if(op === "+") answer = a + b;
+if(op === "-") answer = a - b;
+if(op === "*") answer = a * b;
+
+problems.push({a,b,op,answer});
+}
+
+renderQuestions();
+}
+
+function renderQuestions(){
+
+let box = document.getElementById("questions");
+box.innerHTML = "";
+
+problems.forEach((p,i)=>{
+
+box.innerHTML += `
+<div>
+<b>${p.a} ${p.op} ${p.b} = ?</b>
+<input id="ans${i}" placeholder="Answer">
+</div>
+`;
+
+});
+
+}
+
+function checkAnswers(){
+
+let correct = true;
+
+problems.forEach((p,i)=>{
+
+let user = Number(document.getElementById("ans"+i).value);
+
+if(user !== p.answer){
+correct = false;
+}
+
+});
+
+let result = document.getElementById("result");
+
+if(correct){
+result.innerHTML = "✅ Alarm Stopped — Good Morning!";
+result.className = "result green";
+}
+else{
+result.innerHTML = "❌ Wrong answers — wake up properly!";
+result.className = "result red";
+}
+
+}
+
+// init
+generateProblems();
+
+</script>
+
+</body>
+</html>
