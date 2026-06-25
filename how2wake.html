@@ -79,9 +79,7 @@ font-weight:bold;
 cursor:pointer;
 }
 
-button:hover{
-background:#372fc7;
-}
+button:hover{background:#372fc7;}
 
 .result{
 margin-top:15px;
@@ -119,24 +117,19 @@ font-size:13px;
 
 <div class="container">
 
-<!-- SET ALARM -->
 <div class="card">
 <h2>⏰ Set Alarm</h2>
 
 <input type="time" id="alarmTime">
-
 <button onclick="setAlarm()">Set Alarm</button>
-
-<button onclick="clearAll()" style="background:#dc2626;">
-🗑 Clear All
-</button>
+<button onclick="clearAll()" style="background:#dc2626;">Clear All</button>
 
 <p id="status"></p>
 </div>
 
-<!-- CHALLENGE -->
 <div class="card">
 <h2>🔴 Wake Up Challenge</h2>
+
 <div id="questions"></div>
 
 <button onclick="checkAnswers()">Stop Alarm</button>
@@ -154,23 +147,19 @@ my2L © 2026
 
 let alarmTime = null;
 let alarmTriggered = false;
-let alarmFiredFor = null;
-
-let interval = null;
-
+let alarmInterval = null;
 let problems = [];
 
 let audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
 
 function setAlarm(){
 
+if(alarmInterval) clearInterval(alarmInterval);
+
 alarmTime = document.getElementById("alarmTime").value;
 document.getElementById("status").innerText = "Alarm set for " + alarmTime;
 
-// stop old interval (IMPORTANT FIX)
-if(interval) clearInterval(interval);
-
-interval = setInterval(checkAlarm, 1000);
+alarmInterval = setInterval(checkAlarm, 1000);
 }
 
 function checkAlarm(){
@@ -180,10 +169,8 @@ if(alarmTriggered || !alarmTime) return;
 let now = new Date();
 let current = now.toTimeString().slice(0,5);
 
-// prevent double trigger
-if(current === alarmTime && alarmFiredFor !== alarmTime){
+if(current === alarmTime){
 triggerAlarm();
-alarmFiredFor = alarmTime;
 }
 }
 
@@ -194,18 +181,16 @@ alarmTriggered = true;
 audio.loop = true;
 audio.play();
 
-// generate 3 problems (+ and - only)
+// generate 3 + and - problems only
 problems = [];
 
 for(let i=0;i<3;i++){
-
 let a = Math.floor(Math.random()*20)+1;
 let b = Math.floor(Math.random()*20)+1;
 let op = Math.random() > 0.5 ? "+" : "-";
+let ans = op === "+" ? a + b : a - b;
 
-let answer = (op === "+") ? a + b : a - b;
-
-problems.push({a,b,op,answer});
+problems.push({a,b,op,ans});
 }
 
 renderQuestions();
@@ -219,14 +204,12 @@ let box = document.getElementById("questions");
 box.innerHTML = "";
 
 problems.forEach((p,i)=>{
-
 box.innerHTML += `
 <div>
 <b>${p.a} ${p.op} ${p.b} = ?</b>
 <input id="ans${i}" placeholder="Answer">
 </div>
 `;
-
 });
 }
 
@@ -235,51 +218,40 @@ function checkAnswers(){
 let correct = true;
 
 problems.forEach((p,i)=>{
-
 let user = Number(document.getElementById("ans"+i).value);
-
-if(user !== p.answer){
-correct = false;
-}
-
+if(user !== p.ans) correct = false;
 });
 
 let result = document.getElementById("result");
 
 if(correct){
-
 audio.pause();
 audio.currentTime = 0;
 
-result.innerHTML = "✅ Alarm Stopped!";
-result.className = "result green";
-
 alarmTriggered = false;
 
+result.innerHTML = "✅ Alarm Stopped!";
+result.className = "result green";
 }else{
 result.innerHTML = "❌ Wrong answers!";
 result.className = "result red";
 }
-
 }
 
 function clearAll(){
 
 alarmTime = null;
 alarmTriggered = false;
-alarmFiredFor = null;
 
-problems = [];
+if(alarmInterval) clearInterval(alarmInterval);
+
+audio.pause();
+audio.currentTime = 0;
 
 document.getElementById("alarmTime").value = "";
 document.getElementById("status").innerText = "";
 document.getElementById("questions").innerHTML = "";
 document.getElementById("result").innerHTML = "";
-
-audio.pause();
-audio.currentTime = 0;
-
-if(interval) clearInterval(interval);
 }
 
 </script>
