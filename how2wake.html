@@ -80,7 +80,13 @@ cursor:pointer;
 }
 
 button:hover{background:#372fc7;}
-
+.small-btn{
+width:auto;
+padding:6px 10px;
+font-size:12px;
+border-radius:8px;
+}
+  
 .result{
 margin-top:15px;
 padding:15px;
@@ -118,17 +124,22 @@ font-size:13px;
 <div class="container">
 
 <div class="card">
-<h2>⏰ Set Alarm</h2>
+<h2>Set Alarm</h2>
 
 <input type="time" id="alarmTime">
 <button onclick="setAlarm()">Set Alarm</button>
-<button onclick="clearAll()" style="background:#dc2626;">Clear All</button>
+<div style="margin-top:15px;">
+<button class="small-btn" onclick="clearAll()" style="background:#dc2626;">
+Clear All
+</button>
+</div>
+  
 
 <p id="status"></p>
 </div>
 
 <div class="card">
-<h2>🔴 Wake Up Challenge</h2>
+<h2>Wake Up Challenge</h2>
 
 <div id="questions"></div>
 
