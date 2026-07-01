@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What2Buy - my2L</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#333;
+}
+
+
+/* HEADER */
+
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .what{
+color:white;
+}
+
+.title .buy{
+color:#ffd700;
+}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+}
+
+
+/* HOME */
+
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+
+padding:4px 8px;
+font-size:11px;
+
+background:white;
+color:black;
+
+border:none;
+border-radius:6px;
+
+cursor:pointer;
+width:auto;
+}
+
+
+/* LAYOUT */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:25px;
+}
+
+
+.card{
+
+background:white;
+padding:25px;
+
+margin:20px 0;
+
+border-radius:16px;
+
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+
+}
+
+
+/* INPUT */
+
+input,select{
+
+width:100%;
+
+padding:12px;
+
+margin:8px 0;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+}
+
+
+/* BUTTON */
+
+button{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+background:#4f46e5;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#372fc7;
+
+}
+
+
+/* ITEMS */
+
+.item{
+
+background:#eef0ff;
+
+padding:12px;
+
+margin:8px 0;
+
+border-radius:10px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+.small-btn{
+
+width:auto;
+
+padding:6px 10px;
+
+font-size:12px;
+
+margin:0;
+
+}
+
+
+
+/* CHECKLIST */
+
+.shopping{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+background:#eef6ff;
+
+padding:12px;
+
+margin:8px 0;
+
+border-radius:10px;
+
+}
+
+
+.shopping span{
+
+flex:1;
+
+}
+
+
+.done{
+
+text-decoration:line-through;
+
+color:#777;
+
+}
+
+
+
+/* FOOTER */
+
+.footer{
+
+margin-top:50px;
+
+background:#222;
+
+color:white;
+
+text-align:center;
+
+padding:20px;
+
+font-size:13px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<button class="home-btn" onclick="location.href='index.html'">
+Home
+</button>
+
+
+<div class="title">
+<span class="what">What</span><span class="buy">2Buy</span>
+</div>
+
+
+<p class="subtitle">
+Create your shopping list quickly.
+</p>
+
+
+</header>
+
+
+
+<div class="container">
+
+
+
+<!-- CATEGORY -->
+
+<div class="card">
+
+<h2>🛒 Choose Category</h2>
+
+
+<select id="category" onchange="showItems()">
+
+<option value="food">🍎 Food</option>
+
+<option value="drinks">🥤 Drinks</option>
+
+<option value="care">🧴 Personal Care</option>
+
+<option value="house">🧹 Household</option>
+
+<option value="school">📚 School / Office</option>
+
+
+</select>
+
+
+<div id="items"></div>
+
+
+</div>
+
+
+
+
+<!-- CUSTOM -->
+
+<div class="card">
+
+<h2>➕ Add Custom Item</h2>
+
+
+<input id="customItem" placeholder="Example: Phone charger">
+
+
+<button onclick="addCustom()">
+Add Item
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- LIST -->
+
+
+<div class="card">
+
+
+<h2>📋 My Shopping List</h2>
+
+
+<div id="list"></div>
+
+
+<button onclick="clearAll()">
+Clear List
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+<div class="footer">
+
+my2L © 2026 | Simple Tools For Everyday Life
+
+</div>
+
+
+
+
+
+<script>
+
+
+const categories = {
+
+
+food:[
+
+"Rice",
+"Bread",
+"Eggs",
+"Chicken",
+"Pork",
+"Fish",
+"Apple",
+"Banana",
+"Vegetables",
+"Potato"
+
+],
+
+
+drinks:[
+
+"Water",
+"Milk",
+"Juice",
+"Coffee",
+"Soda"
+
+],
+
+
+care:[
+
+"Soap",
+"Shampoo",
+"Toothpaste",
+"Tissue",
+"Deodorant"
+
+],
+
+
+house:[
+
+"Detergent",
+"Dishwashing Liquid",
+"Sponge",
+"Trash Bags",
+"Cleaning Supplies"
+
+],
+
+
+school:[
+
+"Notebook",
+"Pen",
+"Paper",
+"Folder"
+
+]
+
+
+};
+
+
+
+let shoppingList = JSON.parse(localStorage.getItem("my2L_buy")) || [];
+
+
+
+
+function showItems(){
+
+
+let cat=document.getElementById("category").value;
+
+
+let box=document.getElementById("items");
+
+
+box.innerHTML="";
+
+
+categories[cat].forEach(item=>{
+
+
+box.innerHTML += `
+
+<div class="item">
+
+${item}
+
+<button class="small-btn" onclick="addItem('${item}')">
+Add
+</button>
+
+</div>
+
+`;
+
+
+});
+
+
+}
+
+
+
+
+function addItem(item){
+
+
+shoppingList.push({
+
+name:item,
+
+done:false
+
+});
+
+
+save();
+
+render();
+
+
+}
+
+
+
+
+function addCustom(){
+
+
+let item=document.getElementById("customItem").value;
+
+
+if(!item)return;
+
+
+shoppingList.push({
+
+name:item,
+
+done:false
+
+});
+
+
+document.getElementById("customItem").value="";
+
+
+save();
+
+render();
+
+
+}
+
+
+
+
+
+function render(){
+
+
+let box=document.getElementById("list");
+
+
+box.innerHTML="";
+
+
+shoppingList.forEach((item,index)=>{
+
+
+box.innerHTML += `
+
+
+<div class="shopping">
+
+
+<input type="checkbox"
+
+${item.done?"checked":""}
+
+onclick="toggle(${index})">
+
+
+<span class="${item.done?'done':''}">
+
+${item.name}
+
+</span>
+
+
+<button class="small-btn"
+
+onclick="removeItem(${index})">
+
+Delete
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+function toggle(i){
+
+
+shoppingList[i].done = !shoppingList[i].done;
+
+
+save();
+
+render();
+
+
+}
+
+
+
+
+function removeItem(i){
+
+
+shoppingList.splice(i,1);
+
+
+save();
+
+render();
+
+
+}
+
+
+
+
+
+function clearAll(){
+
+
+shoppingList=[];
+
+
+save();
+
+render();
+
+
+}
+
+
+
+
+function save(){
+
+
+localStorage.setItem(
+
+"my2L_buy",
+
+JSON.stringify(shoppingList)
+
+);
+
+
+}
+
+
+
+
+
+showItems();
+
+render();
+
+
+</script>
+
+
+
+</body>
+
+</html>
