@@ -306,15 +306,33 @@ Create your shopping list quickly.
 
 <select id="category" onchange="showItems()">
 
-<option value="food">🍎 Food</option>
+<option value="food_fruits">🍎 Food: Fruits</option>
+<option value="food_vegetables">🥦 Food: Vegetables</option>
+<option value="food_meat_poultry">🥩 Food: Meat & Poultry</option>
+<option value="food_processed_meat">🌭 Food: Processed Meat</option>
+<option value="food_seafood">🐟 Food: Seafood</option>
+<option value="food_dairy_eggs">🥛 Food: Dairy & Eggs</option>
+<option value="food_rice_grains">🍚 Food: Rice & Grains</option>
+<option value="food_pasta_baking">🍝 Food: Pasta & Baking</option>
+<option value="food_seasoning_sauces">🧂 Food: Seasoning & Sauces</option>
+<option value="food_canned_goods">🥫 Food: Canned Goods</option>
+<option value="food_frozen_food">🧊 Food: Frozen Food</option>
+<option value="food_snacks">🍿 Food: Snacks</option>
+<option value="food_drinks">🥤 Food: Drinks</option>
 
-<option value="drinks">🥤 Drinks</option>
+<option value="personal_bath_hair">🧴 Personal: Bath & Hair</option>
+<option value="personal_dental">🦷 Personal: Dental</option>
+<option value="personal_hygiene">🧻 Personal: Hygiene</option>
 
-<option value="care">🧴 Personal Care</option>
+<option value="household_cleaning">🧹 Household: Cleaning</option>
+<option value="household_kitchen">🍽️ Household: Kitchen</option>
+<option value="household_laundry_bathroom">🧺 Household: Laundry & Bathroom</option>
+<option value="household_general_items">🏠 Household: General Items</option>
 
-<option value="house">🧹 Household</option>
-
-<option value="school">📚 School / Office</option>
+<option value="school_office_supplies">📚 School & Office Supplies</option>
+<option value="pet_supplies">🐾 Pet Supplies</option>
+<option value="electronics">💻 Electronics</option>
+<option value="clothing">👕 Clothing</option>
 
 
 </select>
@@ -390,301 +408,352 @@ my2L © 2026 | Simple Tools For Everyday Life
 
 const categories = {
 
-food: {
-
-"Fresh Produce - Fruits":[
+food_fruits:[
 "Apple",
+"Avocado",
 "Banana",
-"Orange",
+"Blueberry",
+"Cherry",
+"Coconut",
+"Dragon Fruit",
 "Grapes",
-"Watermelon",
-"Melon",
-"Strawberry",
+"Kiwi",
+"Lemon",
 "Mango",
+"Melon",
+"Orange",
+"Peach",
+"Pear",
 "Pineapple",
-"Lemon"
+"Plum",
+"Raspberry",
+"Strawberry",
+"Watermelon",
 ],
 
-"Fresh Produce - Vegetables":[
-"Carrot",
-"Potato",
-"Onion",
-"Garlic",
-"Tomato",
-"Lettuce",
-"Cabbage",
+food_vegetables:[
+"Bell Pepper",
 "Broccoli",
+"Cabbage",
+"Carrot",
+"Cauliflower",
+"Celery",
+"Corn",
+"Cucumber",
+"Eggplant",
+"Garlic",
+"Green Beans",
+"Lettuce",
+"Mushroom",
+"Onion",
+"Potato",
+"Pumpkin",
+"Radish",
 "Spinach",
-"Bell Pepper"
+"Sweet Potato",
+"Tomato",
 ],
 
-"Meat & Poultry":[
-"Chicken",
-"Chicken Breast",
-"Whole Chicken",
+food_meat_poultry:[
 "Beef",
-"Ground Beef",
-"Steak",
+"Beef: Ground",
+"Beef: Ribs",
+"Beef: Steak",
+"Chicken",
+"Chicken: Breast",
+"Chicken: Legs",
+"Chicken: Thighs",
+"Chicken: Wings",
 "Pork",
-"Pork Chop",
-"Bacon",
-"Sausage"
+"Pork: Belly",
+"Pork: Chop",
+"Pork: Ground",
+"Pork: Ribs"
 ],
 
-"Seafood":[
+food_processed_meat:[
+"Bacon",
+"Burger Patty",
+"Chorizo",
+"Ham",
+"Hotdog",
+"Meatballs",
+"Nuggets",
+"Pepperoni",
+"Salami",
+"Sausage",
+],
+
+food_seafood:[
+"Crab",
 "Fish",
 "Salmon",
-"Tilapia",
-"Shrimp",
-"Crab",
 "Sardines",
+"Shrimp",
+"Squid",
+"Tilapia",
 "Tuna",
-"Squid"
 ],
 
-"Dairy & Eggs":[
-"Milk",
-"Eggs",
-"Cheese",
+food_dairy_eggs:[
 "Butter",
-"Yogurt",
+"Cheese",
+"Chocolate Milk",
 "Cream",
-"Condensed Milk"
+"Cream Cheese",
+"Eggs",
+"Milk",
+"Yogurt",
 ],
 
-"Rice & Grains":[
-"Rice",
-"Oats",
-"Cereal",
-"Quinoa",
+food_rice_grains:[
 "Bread",
-"Tortilla"
+"Brown Rice",
+"Cereal",
+"Oats",
+"Rice"
 ],
 
-"Pasta & Baking":[
-"Pasta",
-"Flour",
-"Sugar",
+food_pasta_baking:[
 "Baking Powder",
+"Baking Soda",
+"Flour",
+"Macaroni",
+"Pasta",
+"Spaghetti",
 "Yeast",
-"Cooking Oil"
 ],
 
-"Seasoning & Sauces":[
-"Salt",
-"Pepper",
-"Soy Sauce",
+food_seasoning_sauces:[
 "Ketchup",
 "Mayonnaise",
+"Mustard",
+"Oil: Cooking",
+"Oil: Olive",
+"Powder: Garlic",
+"Powder: Onion",
+"Sauce: BBQ",
+"Sauce: Fish",
+"Sauce: Hot",
+"Sauce: Soy",
+"Sauce: Tomato",
+"Seasoning: Pepper",
+"Seasoning: Salt",
+"Spices",
+"Sugar",
 "Vinegar",
-"Hot Sauce",
-"Spices"
 ],
 
-"Canned Goods":[
-"Canned Tuna",
-"Canned Corn",
+food_canned_goods:[
 "Canned Beans",
+"Canned Corn",
+"Canned Meat",
+"Canned Peaches",
+"Canned Pineapple",
+"Canned Sardines",
 "Canned Soup",
-"Canned Fruits",
-"Tomato Sauce"
+"Canned Tuna",
+"Coconut Milk",
+"Fruit Cocktail",
 ],
 
-"Frozen Food":[
-"Frozen Vegetables",
-"Frozen Fruits",
+food_frozen_food:[
 "French Fries",
+"Frozen Dumplings",
+"Frozen Fruits",
+"Frozen Meals",
 "Frozen Pizza",
+"Frozen Vegetables",
 "Ice Cream",
-"Frozen Meals"
 ],
 
-"Snacks":[
+food_snacks:[
+"Candy",
 "Chips",
-"Crackers",
-"Cookies",
-"Popcorn",
 "Chocolate",
-"Nuts"
+"Cookies",
+"Crackers",
+"Nuts",
+"Peanut Butter",
+"Popcorn",
 ],
 
-"Drinks":[
-"Water",
+food_drinks:[
 "Coffee",
-"Tea",
+"Drink Powder",
+"Energy Drink",
+"Hot Chocolate",
 "Juice",
+"Milk Tea",
 "Soda",
-"Sports Drink"
-]
-
-},
-
-
-personalCare:{
+"Sports Drink",
+"Tea",
+"Water",
+],
 
 
-"Bath & Hair":[
+personal_bath_hair:[
 "Soap",
 "Body Wash",
 "Shampoo",
 "Conditioner",
-"Hair Gel"
+"Hair Gel",
+"Hair Spray",
+"Hair Wax",
+"Body Scrub",
+"Face Wash",
+"Shaving Cream",
+"Razor"
 ],
 
-
-"Dental":[
+personal_dental:[
 "Toothbrush",
 "Toothpaste",
 "Mouthwash",
-"Dental Floss"
+"Dental Floss",
+"Tooth Picks"
 ],
 
-
-"Hygiene":[
+personal_hygiene:[
 "Tissue",
-"Toilet Paper",
 "Deodorant",
 "Lotion",
 "Hand Sanitizer",
-"Cotton"
-]
+"Cotton",
+"Wet Wipes",
+"Sanitary Pads",
+"Perfume",
+"Hand Soap",
+"Facial Tissue"
+],
 
-},
-
-
-
-household:{
-
-
-"Cleaning":[
-"Laundry Detergent",
-"Dishwashing Liquid",
+household_cleaning:[
 "Bleach",
-"Sponge",
+"Broom",
 "Cleaning Spray",
+"Dustpan",
+"Floor Cleaner",
+"Glass Cleaner",
+"Laundry Detergent",
+"Mop",
+"Scrub Brush",
+"Sponge",
 "Trash Bags"
 ],
 
-
-"Kitchen Supplies":[
-"Paper Towel",
+household_kitchen:[
 "Aluminum Foil",
-"Plastic Container",
+"Bowl",
+"Dish Rack",
 "Food Wrap",
-"Napkins"
+"Fork",
+"Glass",
+"Knife",
+"Napkins",
+"Paper Towel",
+"Plate",
+"Plastic Container",
+"Trash Can",
+"Spoon"
 ],
 
+household_laundry_bathroom:[
+"Fabric Softener",
+"Iron",
+"Shower Curtain",
+"Toilet Brush",
+"Toilet Cleaner",
+"Toilet Paper"
+],
 
-"Home Supplies":[
-"Light Bulb",
+household_general_items:[
+"Air Freshener",
 "Batteries",
-"Hangers",
+"Candle",
+"Doormat",
 "Extension Cord",
-"Air Freshener"
-]
-
-},
-
-
-
-schoolOffice:{
-
-
-"Writing":[
-"Pen",
-"Pencil",
-"Eraser",
-"Marker",
-"Highlighter"
+"Flashlight",
+"Hangers",
+"Light Bulb",
+"Storage Box"
 ],
 
-
-"Paper Supplies":[
-"Notebook",
+school_office_supplies:[
+"Binder",
 "Bond Paper",
+"Calculator",
+"Colored Pencil",
+"Correction Tape",
+"Envelope",
+"Eraser",
 "Folder",
-"Sticky Notes",
-"Printer Paper"
-],
-
-
-"Office Items":[
-"Stapler",
-"Scissors",
-"Tape",
 "Glue",
-"Calculator"
-]
-
-},
-
-
-
-pets:{
-
-
-"Dog":[
-"Dog Food",
-"Dog Treats",
-"Dog Shampoo",
-"Leash",
-"Dog Toy"
+"Highlighter",
+"Index Card",
+"Marker",
+"Notebook",
+"Paper Clip",
+"Pencil",
+"Pen",
+"Printer Paper",
+"Ruler",
+"Scissors",
+"Stapler",
+"Staple Remover",
+"Sticky Notes",
+"Tape"
 ],
 
+pet_supplies:[
+"Pet Food",
+"Pet Treats",
+"Pet Shampoo",
+"Pet Leash",
+"Pet Toy",
+"Pet Collar",
+"Pet Bed",
+"Pet Bowl",
+"Pet Litter"
+],
 
-"Cat":[
-"Cat Food",
-"Cat Litter",
-"Cat Treats",
-"Cat Toy"
-]
-
-},
-
-
-
-electronics:{
-
-
-"Accessories":[
-"Phone Charger",
-"USB Cable",
-"Power Bank",
+electronics:[
+"Adapter",
 "Battery",
-"Earphones"
+"Earphones",
+"Extension Cable",
+"Flash Drive",
+"Hard Drive",
+"Keyboard",
+"Memory Card",
+"Mouse",
+"Phone Case",
+"Phone Charger",
+"Power Bank",
+"Screen Protector",
+"Speaker",
+"USB Cable",
+"USB Hub",
+"Webcam"
 ],
 
-
-"Gadgets":[
-"Mouse",
-"Keyboard",
-"Flash Drive",
-"Memory Card"
-]
-
-},
-
-
-
-clothing:{
-
-
-"Clothes":[
-"Shirt",
+clothing:[
+"Bag",
+"Belt",
+"Cap",
+"Hat",
+"Jacket",
+"Jeans",
 "Pants",
+"Shirt",
 "Shorts",
 "Socks",
-"Underwear"
+"Sunglasses",
+"Underwear",
+"Wallet",
+"Watch",
+"Sleepwear"
 ],
 
-
-"Accessories":[
-"Hat",
-"Belt",
-"Wallet",
-"Bag",
-"Umbrella"
-]
 
 }
 
