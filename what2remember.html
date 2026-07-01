@@ -155,15 +155,9 @@ background:#372fc7;
 /* NOTE */
 
 .note{
-
-background:#eef0ff;
-
-padding:15px;
-
-margin-top:10px;
-
-border-radius:12px;
-
+margin-top:8px;
+color:#555;
+white-space:pre-line;
 }
 
 
@@ -264,7 +258,7 @@ Save notes, reminders, and important information.
 <textarea id="textInput" placeholder="Write your note..."></textarea>
 
 
-<button onclick="saveNote()">
+<button id="saveBtn" onclick="saveNote()">
 Save Note
 </button>
 
@@ -307,9 +301,11 @@ my2L © 2026 | Simple Tools For Everyday Life
 
 
 <script>
-
+<script>
 
 let notes = JSON.parse(localStorage.getItem("my2L_notes")) || [];
+
+let editIndex = -1;
 
 
 
@@ -325,6 +321,9 @@ if(!title || !text) return;
 
 
 
+if(editIndex === -1){
+
+
 notes.push({
 
 title:title,
@@ -332,6 +331,24 @@ title:title,
 text:text
 
 });
+
+
+}else{
+
+
+notes[editIndex].title = title;
+
+notes[editIndex].text = text;
+
+
+editIndex = -1;
+
+
+document.getElementById("saveBtn").innerText="Save Note";
+
+
+}
+
 
 
 localStorage.setItem(
@@ -354,6 +371,7 @@ loadNotes();
 
 
 
+
 function loadNotes(){
 
 
@@ -369,16 +387,20 @@ notes.forEach((n,i)=>{
 
 box.innerHTML += `
 
+
 <div class="note">
+
 
 <div class="note-title">
 ${n.title}
 </div>
 
 
+
 <div class="note-text">
 ${n.text}
 </div>
+
 
 
 <button class="small-btn" onclick="editNote(${i})">
@@ -391,7 +413,9 @@ Delete
 </button>
 
 
+
 </div>
+
 
 `;
 
@@ -407,27 +431,27 @@ Delete
 function editNote(i){
 
 
-let newText = prompt(
-"Edit note:",
-notes[i].text
-);
+document.getElementById("titleInput").value =
+notes[i].title;
 
 
-if(newText){
+document.getElementById("textInput").value =
+notes[i].text;
 
 
-notes[i].text = newText;
+
+editIndex = i;
 
 
-localStorage.setItem(
-"my2L_notes",
-JSON.stringify(notes)
-);
+
+document.getElementById("saveBtn").innerText =
+"Update Note";
 
 
-loadNotes();
-
-}
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 
 }
@@ -477,6 +501,8 @@ loadNotes();
 
 loadNotes();
 
+
+</script>
 
 </script>
 
