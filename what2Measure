@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What2Measure - my2L</title>
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#333;
+line-height:1.5;
+}
+
+/* =========================
+   HEADER
+========================= */
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .what{color:white;}
+.title .length{color:#ffd700;}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+}
+
+/* HOME BUTTON */
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+
+padding:4px 8px;
+font-size:11px;
+
+background:white;
+color:black;
+
+border:none;
+border-radius:6px;
+
+cursor:pointer;
+width:auto;
+}
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+max-width:800px;
+margin:auto;
+padding:25px;
+}
+
+
+.card{
+background:white;
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+h2{
+font-size:22px;
+margin-bottom:5px;
+}
+
+.helper{
+font-size:14px;
+color:#666;
+margin-bottom:10px;
+}
+
+
+/* =========================
+   INPUTS
+========================= */
+
+input, select{
+
+width:100%;
+padding:12px;
+
+margin:8px 0;
+
+border-radius:8px;
+
+border:1px solid #ddd;
+
+font-size:14px;
+
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+
+width:100%;
+
+padding:12px;
+
+margin-top:10px;
+
+background:#4f46e5;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:15px;
+
+font-weight:bold;
+
+}
+
+
+button:hover{
+
+background:#372fc7;
+
+}
+
+
+/* SMALL BUTTON */
+
+.small-btn{
+
+width:auto;
+
+padding:6px 10px;
+
+font-size:12px;
+
+border-radius:8px;
+
+}
+
+
+
+/* =========================
+   RESULT
+========================= */
+
+.result{
+
+background:#fff7cc;
+
+padding:18px;
+
+border-radius:12px;
+
+margin-top:15px;
+
+font-size:18px;
+
+font-weight:bold;
+
+text-align:center;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+
+margin-top:50px;
+
+background:#222;
+
+color:white;
+
+text-align:center;
+
+padding:20px;
+
+font-size:13px;
+
+border-top:3px solid #111;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<button class="home-btn" onclick="location.href='index.html'">
+Home
+</button>
+
+
+<div class="title">
+
+<span class="what">What</span><span class="length">2Length</span>
+
+</div>
+
+
+<p class="subtitle">
+
+Use your phone as a quick measuring tool.
+
+</p>
+
+
+</header>
+
+
+
+<div class="container">
+
+
+
+<!-- PHONE SELECT -->
+
+<div class="card">
+
+<h2>📱 Select Phone</h2>
+
+<p class="helper">
+Choose your phone model or manually enter the measurement.
+</p>
+
+
+<select id="phoneSelect" onchange="changePhone()">
+
+<option value="14.66">iPhone 15 Pro (14.66 cm)</option>
+
+<option value="14.76">iPhone 15 (14.76 cm)</option>
+
+<option value="14.75">iPhone 14 Pro (14.75 cm)</option>
+
+<option value="14.70">Samsung Galaxy S24 (14.70 cm)</option>
+
+<option value="16.10">Samsung Galaxy A55 (16.10 cm)</option>
+
+<option value="15.05">Google Pixel 8 (15.05 cm)</option>
+
+<option value="16.15">Redmi Note 13 (16.15 cm)</option>
+
+<option value="manual">Manual Input</option>
+
+
+</select>
+
+
+<input 
+id="manualLength"
+type="number"
+placeholder="Enter phone length in cm"
+style="display:none;"
+>
+
+
+</div>
+
+
+
+
+<!-- MEASURE -->
+
+<div class="card">
+
+<h2>Measure Object</h2>
+
+
+<p class="helper">
+How many phones long is the object?
+</p>
+
+
+<input 
+id="phoneCount"
+type="number"
+placeholder="Example: 5"
+>
+
+
+<button onclick="calculate()">
+Calculate
+</button>
+
+
+</div>
+
+
+
+
+
+<!-- RESULT -->
+
+<div class="card">
+
+<h2>Result</h2>
+
+
+<div id="result" class="result">
+
+Waiting for measurement...
+
+</div>
+
+
+<div style="margin-top:15px;">
+
+<button class="small-btn" onclick="clearAll()">
+
+Clear All
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+<div class="footer">
+
+my2L © 2026 | Simple Tools For Everyday Life
+
+</div>
+
+
+
+
+<script>
+
+
+let phoneLength = 14.66;
+
+
+
+function changePhone(){
+
+
+let selected = document.getElementById("phoneSelect").value;
+
+
+let manual = document.getElementById("manualLength");
+
+
+
+if(selected === "manual"){
+
+
+manual.style.display="block";
+
+
+}else{
+
+
+manual.style.display="none";
+
+
+phoneLength = Number(selected);
+
+
+}
+
+
+}
+
+
+
+
+function calculate(){
+
+
+
+if(document.getElementById("phoneSelect").value==="manual"){
+
+
+phoneLength = Number(document.getElementById("manualLength").value);
+
+
+}
+
+
+
+let count = Number(document.getElementById("phoneCount").value);
+
+
+
+if(!phoneLength || !count) return;
+
+
+
+let cm = phoneLength * count;
+
+
+let inch = cm / 2.54;
+
+
+
+document.getElementById("result").innerHTML =
+
+cm.toFixed(2) + " cm<br>" +
+
+inch.toFixed(2) + " inches";
+
+
+
+}
+
+
+
+
+
+function clearAll(){
+
+
+phoneLength = 14.66;
+
+
+document.getElementById("phoneSelect").selectedIndex=0;
+
+
+document.getElementById("manualLength").value="";
+
+document.getElementById("manualLength").style.display="none";
+
+
+document.getElementById("phoneCount").value="";
+
+
+document.getElementById("result").innerHTML =
+
+"Waiting for measurement...";
+
+
+}
+
+
+</script>
+
+
+
+</body>
+
+</html>
