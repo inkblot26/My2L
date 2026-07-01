@@ -205,8 +205,8 @@ my2L © 2026 | Simple Tools For Everyday Life
 let notes = JSON.parse(localStorage.getItem("my2L_notes")) || [];
 let editIndex = -1;
 function saveNote(){
-let title = document.getElementById("titleInput").value;
-let text = document.getElementById("textInput").value;
+let text = document.getElementById("textInput").value.trim();
+let title = document.getElementById("titleInput").value.trim();
 if(!title || !text) return;
 if(editIndex === -1){
 notes.push({
