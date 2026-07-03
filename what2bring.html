@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What2Bring - my2L</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#333;
+}
+
+/* HEADER */
+
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .what{
+color:white;
+}
+
+.title .bring{
+color:#ffd700;
+}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+}
+
+/* HOME */
+
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+padding:4px 8px;
+font-size:11px;
+background:white;
+color:black;
+border:none;
+border-radius:6px;
+cursor:pointer;
+width:auto;
+}
+
+/* LAYOUT */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:white;
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* INPUT */
+
+input,select{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+/* BUTTON */
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#372fc7;
+}
+
+.small-btn{
+width:auto;
+padding:6px 10px;
+font-size:12px;
+margin:0;
+}
+
+/* CHECKLIST */
+
+.item{
+display:flex;
+align-items:center;
+gap:10px;
+background:#eef6ff;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+}
+
+.item input[type="checkbox"]{
+width:18px;
+height:18px;
+cursor:pointer;
+margin:0;
+}
+
+.item span{
+flex:1;
+font-size:15px;
+}
+
+.done{
+text-decoration:line-through;
+color:#777;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:50px;
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+font-size:13px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<button class="home-btn" onclick="location.href='index.html'">
+Home
+</button>
+
+<div class="title">
+<span class="what">What</span><span class="bring">2Bring</span>
+</div>
+
+<p class="subtitle">
+Never forget what to bring.
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- EVENT -->
+
+<div class="card">
+
+<h2>📦 Choose Event</h2>
+
+<select id="event">
+
+<option value="none">---</option>
+
+<option value="swimming">
+🏊 Swimming
+</option>
+
+<option value="seminar">
+🎤 Seminar
+</option>
+
+</select>
+
+<button onclick="loadPreset()">
+Load Suggested Items
+</button>
+
+</div>
+
+<!-- CUSTOM -->
+
+<div class="card">
+
+<h2>➕ Add Custom Item</h2>
+
+<input
+id="customItem"
+placeholder="Example: Power Bank">
+
+<button onclick="addCustom()">
+Add Item
+</button>
+
+</div>
+
+<!-- LIST -->
+
+<div class="card">
+
+<h2>🧳 Things To Bring</h2>
+
+<div id="list"></div>
+
+<button onclick="clearAll()">
+Clear List
+</button>
+
+</div>
+
+</div>
+
+<div class="footer">
+my2L © 2026 | Simple Tools For Everyday Life
+</div>
+
+<script>
+
+const presets={
+
+swimming:[
+"Swimsuit",
+"Towel",
+"Goggles",
+"Extra Clothes",
+"Plastic Bag",
+"Shampoo",
+"Soap",
+"Water Bottle",
+"Sunscreen",
+"Slippers"
+],
+
+seminar:[
+"Notebook",
+"Pen",
+"ID",
+"Wallet",
+"Phone",
+"Phone Charger",
+"Laptop",
+"Laptop Charger",
+"Water Bottle",
+"Snacks"
+]
+
+};
+
+let bringList=
+JSON.parse(
+localStorage.getItem("my2L_bring")
+)||[];
+
+  function loadPreset(){
+
+let event =
+document.getElementById("event").value;
+
+if(event==="none") return;
+
+presets[event].forEach(item=>{
+
+let exists = bringList.some(x=>x.name===item);
+
+if(!exists){
+
+bringList.push({
+name:item,
+done:false
+});
+
+}
+
+});
+
+save();
+render();
+
+}
+
+function addCustom(){
+
+let item =
+document.getElementById("customItem").value.trim();
+
+if(!item) return;
+
+let exists =
+bringList.some(x=>
+x.name.toLowerCase()===item.toLowerCase());
+
+if(exists){
+
+document.getElementById("customItem").value="";
+return;
+
+}
+
+bringList.push({
+
+name:item,
+done:false
+
+});
+
+document.getElementById("customItem").value="";
+
+save();
+render();
+
+}
+
+function render(){
+
+let box =
+document.getElementById("list");
+
+box.innerHTML="";
+
+bringList.forEach((item,index)=>{
+
+box.innerHTML += `
+
+<div class="item">
+
+<input
+type="checkbox"
+${item.done?"checked":""}
+onclick="toggle(${index})">
+
+<span class="${item.done?"done":""}">
+${item.name}
+</span>
+
+<button
+class="small-btn"
+onclick="removeItem(${index})">
+Delete
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+function toggle(i){
+
+bringList[i].done =
+!bringList[i].done;
+
+save();
+render();
+
+}
+
+function removeItem(i){
+
+bringList.splice(i,1);
+
+save();
+render();
+
+}
+
+function clearAll(){
+
+bringList=[];
+
+save();
+render();
+
+}
+
+function save(){
+
+localStorage.setItem(
+
+"my2L_bring",
+
+JSON.stringify(bringList)
+
+);
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
