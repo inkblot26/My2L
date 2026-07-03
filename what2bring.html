@@ -201,7 +201,7 @@ Prepare for every event with a ready-made packing checklist.
 </select>
 
 <button onclick="loadPreset()">
-Add Event List
+Load Checklist
 </button>
 
 </div>
@@ -279,27 +279,17 @@ JSON.parse(
 localStorage.getItem("my2L_bring")
 )||[];
 
-  function loadPreset(){
+function loadPreset(){
 
-let event =
-document.getElementById("event").value;
+let event = document.getElementById("event").value;
 
 if(event==="none") return;
 
-presets[event].forEach(item=>{
-
-let exists = bringList.some(x=>x.name===item);
-
-if(!exists){
-
-bringList.push({
-name:item,
-done:false
-});
-
-}
-
-});
+// Replace the current list with the selected event
+bringList = presets[event].map(item => ({
+    name:item,
+    done:false
+}));
 
 save();
 render();
