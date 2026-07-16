@@ -1,183 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>What2Pic</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What2Pic - my2L</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
+}
+
 body{
-    font-family:Arial;
-    background:#f2f2f2;
-    margin:20px;
+background:#f5f7fb;
+color:#333;
 }
 
-h1{
-    text-align:center;
+/* =========================
+HEADER
+========================= */
+
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
 }
 
-#camera{
-    width:100%;
-    max-width:350px;
+.title{
+font-size:44px;
+font-weight:bold;
 }
 
-button{
-    padding:10px 18px;
-    margin-top:10px;
-    cursor:pointer;
+.title .what{
+color:white;
 }
 
-textarea{
-    width:100%;
-    height:80px;
-    margin-top:10px;
-    resize:vertical;
+.title .pic{
+color:#ffd700;
+}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+}
+
+/* =========================
+HOME BUTTON
+========================= */
+
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+padding:4px 8px;
+font-size:11px;
+background:white;
+color:black;
+border:none;
+border-radius:6px;
+cursor:pointer;
+width:auto;
+}
+
+/* =========================
+LAYOUT
+========================= */
+
+.container{
+max-width:900px;
+margin:auto;
+padding:25px;
 }
 
 .card{
-    background:white;
-    padding:15px;
-    margin-top:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
+background:white;
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,.08);
 }
 
-.card img{
-    width:100%;
-    border-radius:8px;
+/* =========================
+HEADINGS
+========================= */
+
+h2{
+margin-bottom:8px;
+font-size:22px;
 }
 
-.time{
-    color:gray;
-    font-size:12px;
-    margin-top:8px;
+.helper{
+font-size:14px;
+color:#666;
+margin-bottom:15px;
 }
 
-.delete{
-    background:#d9534f;
-    color:white;
-    border:none;
-    margin-top:10px;
+/* =========================
+CAMERA
+========================= */
+
+#camera{
+width:100%;
+border-radius:12px;
+background:black;
 }
+
+#preview{
+width:100%;
+display:block;
+border-radius:12px;
+margin-top:15px;
+}
+
+/* =========================
+INPUTS
+========================= */
+
+textarea{
+width:100%;
+height:100px;
+padding:12px;
+margin-top:15px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:14px;
+resize:vertical;
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+button{
+width:100%;
+padding:12px;
+margin-top:12px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#372fc7;
+}
+
+.delete-btn{
+background:#dc2626;
+}
+
+.delete-btn:hover{
+background:#b91c1c;
+}
+
+/* =========================
+PHOTO CARD
+========================= */
+
+.photo-card{
+background:#fafafa;
+border:1px solid #eee;
+padding:15px;
+margin-top:18px;
+border-radius:14px;
+}
+
+.photo-card img{
+width:100%;
+border-radius:10px;
+}
+
+.photo-note{
+margin-top:12px;
+line-height:1.5;
+}
+
+.photo-time{
+margin-top:10px;
+font-size:12px;
+color:#777;
+}
+
+/* =========================
+FOOTER
+========================= */
+
+.footer{
+margin-top:50px;
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+font-size:13px;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.title{
+font-size:34px;
+}
+
+.subtitle{
+font-size:15px;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+padding:18px;
+}
+
+button{
+font-size:14px;
+}
+
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h1>📷 What2Pic</h1>
+<header>
 
-<video id="camera" autoplay playsinline></video>
-<br>
+<button
+class="home-btn"
+onclick="location.href='index.html'">
+Home
+</button>
 
-<button id="capture">Take Picture</button>
+<div class="title">
+<span class="what">What</span><span class="pic">2Pic</span>
+</div>
 
-<canvas id="canvas" style="display:none;"></canvas>
+<p class="subtitle">
+Capture photos and save them with notes so you never forget important details.
+</p>
 
-<div id="editor" style="display:none">
+</header>
 
-<h3>Preview</h3>
+<div class="container">
 
-<img id="preview" width="350">
+<!-- CAMERA -->
 
-<textarea id="note" placeholder="Write your note here..."></textarea>
+<div class="card">
 
-<br>
+<h2>Take a Picture</h2>
 
-<button id="save">Save</button>
+<p class="helper">
+Use your camera to capture an important moment or item.
+</p>
+
+<video
+id="camera"
+autoplay
+playsinline>
+</video>
+
+<button id="capture">
+📷 Capture Photo
+</button>
+
+<canvas
+id="canvas"
+style="display:none;">
+</canvas>
 
 </div>
 
-<hr>
+<!-- PREVIEW -->
+
+<div
+class="card"
+id="editor"
+style="display:none;">
+
+<h2>Preview</h2>
+
+<p class="helper">
+Add a short note before saving.
+</p>
+
+<img id="preview">
+
+<textarea
+id="note"
+placeholder="Example: Parked at Level 3 near Elevator B.">
+</textarea>
+
+<button id="save">
+💾 Save Photo
+</button>
+
+</div>
+
+<!-- GALLERY -->
+
+<div class="card">
 
 <h2>Saved Photos</h2>
 
+<p class="helper">
+Your saved pictures and notes are stored on this device.
+</p>
+
 <div id="gallery"></div>
+
+</div>
+
+</div>
+
+<div class="footer">
+my2L © 2026 | Simple Tools For Everyday Life
+</div>
 
 <script>
 
-const video=document.getElementById("camera");
-const canvas=document.getElementById("canvas");
-const preview=document.getElementById("preview");
+const video = document.getElementById("camera");
+const canvas = document.getElementById("canvas");
+const preview = document.getElementById("preview");
 
-navigator.mediaDevices.getUserMedia({video:true})
+navigator.mediaDevices.getUserMedia({
+video:true
+})
 .then(stream=>{
-    video.srcObject=stream;
+
+video.srcObject=stream;
+
 })
 .catch(()=>{
-    alert("Camera not available.");
+
+alert("Camera not available.");
+
 });
 
 document.getElementById("capture").onclick=function(){
 
-    canvas.width=video.videoWidth;
-    canvas.height=video.videoHeight;
+canvas.width=video.videoWidth;
+canvas.height=video.videoHeight;
 
-    canvas.getContext("2d").drawImage(video,0,0);
+canvas
+.getContext("2d")
+.drawImage(video,0,0);
 
-    preview.src=canvas.toDataURL("image/jpeg");
+preview.src=
+canvas.toDataURL("image/jpeg");
 
-    document.getElementById("editor").style.display="block";
+document.getElementById("editor").style.display="block";
+
 }
 
 document.getElementById("save").onclick=function(){
 
-    let items=JSON.parse(localStorage.getItem("what2pic"))||[];
+let note=
+document.getElementById("note").value.trim();
 
-    items.unshift({
-        photo:preview.src,
-        note:document.getElementById("note").value,
-        time:new Date().toLocaleString()
-    });
+let items=
+JSON.parse(
+localStorage.getItem("my2L_pic")
+)||[];
 
-    localStorage.setItem("what2pic",JSON.stringify(items));
+items.unshift({
 
-    document.getElementById("note").value="";
-    document.getElementById("editor").style.display="none";
+photo:preview.src,
 
-    loadGallery();
+note:note,
+
+time:new Date().toLocaleString()
+
+});
+
+localStorage.setItem(
+
+"my2L_pic",
+
+JSON.stringify(items)
+
+);
+
+document.getElementById("note").value="";
+
+document.getElementById("editor").style.display="none";
+
+loadGallery();
 
 }
 
 function loadGallery(){
 
-    const gallery=document.getElementById("gallery");
+let gallery=
+document.getElementById("gallery");
 
-    let items=JSON.parse(localStorage.getItem("what2pic"))||[];
+let items=
+JSON.parse(
+localStorage.getItem("my2L_pic")
+)||[];
 
-    gallery.innerHTML="";
+gallery.innerHTML="";
 
-    items.forEach((item,index)=>{
+if(items.length===0){
 
-        gallery.innerHTML+=`
-        <div class="card">
+gallery.innerHTML=`
+<p class="helper">
+No saved photos yet.
+</p>
+`;
 
-            <img src="${item.photo}">
+return;
 
-            <p>${item.note}</p>
+}
 
-            <div class="time">${item.time}</div>
+items.forEach((item,index)=>{
 
-            <button class="delete" onclick="deleteItem(${index})">
-            Delete
-            </button>
+gallery.innerHTML+=`
 
-        </div>
-        `;
+<div class="photo-card">
 
-    });
+<img src="${item.photo}">
+
+<div class="photo-note">
+
+${item.note || "<i>No note</i>"}
+
+</div>
+
+<div class="photo-time">
+
+${item.time}
+
+</div>
+
+<button
+class="delete-btn"
+onclick="deleteItem(${index})">
+
+Delete
+
+</button>
+
+</div>
+
+`;
+
+});
 
 }
 
 function deleteItem(index){
 
-    let items=JSON.parse(localStorage.getItem("what2pic"))||[];
+let items=
+JSON.parse(
+localStorage.getItem("my2L_pic")
+)||[];
 
-    items.splice(index,1);
+items.splice(index,1);
 
-    localStorage.setItem("what2pic",JSON.stringify(items));
+localStorage.setItem(
 
-    loadGallery();
+"my2L_pic",
+
+JSON.stringify(items)
+
+);
+
+loadGallery();
 
 }
 
