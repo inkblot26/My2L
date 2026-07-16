@@ -437,6 +437,103 @@ loadGallery();
 
 }
 
+
+function downloadItem(index){
+
+let items =
+JSON.parse(localStorage.getItem("my2L_pic")) || [];
+
+let item = items[index];
+
+let canvas = document.createElement("canvas");
+let ctx = canvas.getContext("2d");
+
+let img = new Image();
+
+img.onload = function(){
+
+canvas.width = img.width;
+canvas.height = img.height + 180;
+
+ctx.fillStyle = "white";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.drawImage(img,0,0);
+
+ctx.fillStyle = "#000";
+ctx.font = "24px Arial";
+
+ctx.fillText("Note:",20,img.height+40);
+
+ctx.font = "20px Arial";
+
+wrapText(
+ctx,
+item.note || "No note",
+20,
+img.height+75,
+canvas.width-40,
+28
+);
+
+ctx.fillStyle="#666";
+ctx.font="18px Arial";
+
+ctx.fillText(
+item.time,
+20,
+canvas.height-25
+);
+
+let link=document.createElement("a");
+
+link.download="What2Pic_"+Date.now()+".png";
+
+link.href=canvas.toDataURL("image/png");
+
+link.click();
+
+}
+
+img.src=item.photo;
+
+}
+
+function wrapText(ctx,text,x,y,maxWidth,lineHeight){
+
+let words=text.split(" ");
+
+let line="";
+
+for(let n=0;n<words.length;n++){
+
+let test=line+words[n]+" ";
+
+let width=ctx.measureText(test).width;
+
+if(width>maxWidth && n>0){
+
+ctx.fillText(line,x,y);
+
+line=words[n]+" ";
+
+y+=lineHeight;
+
+}
+else{
+
+line=test;
+
+}
+
+}
+
+ctx.fillText(line,x,y);
+
+}  
+
+  
+  
 function loadGallery(){
 
 let gallery=
@@ -480,6 +577,15 @@ ${item.note || "<i>No note</i>"}
 ${item.time}
 
 </div>
+
+
+<button
+onclick="downloadItem(${index})">
+
+Download
+
+</button>
+
 
 <button
 class="delete-btn"
