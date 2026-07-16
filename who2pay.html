@@ -314,6 +314,12 @@ Split expenses and instantly see who owes whom.
 <div id="settlement"></div>
 </div>
 
+<!-- Clear Button -->   
+<div id="settlement"></div>
+<button onclick="clearEverything()">
+Clear Everything
+</button>   
+
 </div>
 
 <div class="footer">
@@ -601,6 +607,24 @@ ${from.name} pays ${to.name} ₱${amt.toFixed(2)}
 });
 
 }
+function clearEverything(){
+
+if(!confirm("Delete all members and expenses?")) return;
+
+members = [];
+expenses = [];
+editIndex = -1;
+debts = {};
+
+localStorage.removeItem("my2L_pay_members");
+localStorage.removeItem("my2L_pay_expenses");
+
+clearExpenseForm();
+
+renderAll();
+
+}
+   
 renderAll();
 </script>
 
