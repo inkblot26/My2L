@@ -324,8 +324,12 @@ my2L © 2026 | Simple Tools For Everyday Life
 
 /* SAME JS (UNCHANGED) */
 
-let members = [];
-let expenses = [];
+let members =
+JSON.parse(localStorage.getItem("my2L_pay_members")) || [];
+
+let expenses =
+JSON.parse(localStorage.getItem("my2L_pay_expenses")) || [];
+   
 let editIndex = -1;
 let debts = {};
    
@@ -336,9 +340,24 @@ if(!name) return;
 members.push({name});
 document.getElementById("memberName").value="";
 initDebts();
+save();
 renderAll();
 }
 
+function save(){
+
+localStorage.setItem(
+"my2L_pay_members",
+JSON.stringify(members)
+);
+
+localStorage.setItem(
+"my2L_pay_expenses",
+JSON.stringify(expenses)
+);
+
+}
+   
 function renderAll(){
 renderMembers();
 renderExpenseForm();
@@ -407,6 +426,7 @@ editIndex=-1;
 expenses.push(data);
 }
 clearExpenseForm();
+save();
 renderAll();
 }
 
@@ -445,6 +465,7 @@ x.checked=e.selected.includes(Number(x.value));
 
 function deleteExpense(i){
 expenses.splice(i,1);
+save();
 renderAll();
 }
 
@@ -580,7 +601,7 @@ ${from.name} pays ${to.name} ₱${amt.toFixed(2)}
 });
 
 }
-
+renderAll();
 </script>
 
 </body>
