@@ -581,18 +581,17 @@ ${item.time}
 
 <button
 onclick="downloadItem(${index})">
-
 Download
-
 </button>
 
+<button onclick="editItem(${index})">
+Edit Note
+</button>
 
 <button
 class="delete-btn"
 onclick="deleteItem(${index})">
-
 Delete
-
 </button>
 
 </div>
@@ -603,6 +602,32 @@ Delete
 
 }
 
+function editItem(index){
+
+let items =
+JSON.parse(localStorage.getItem("my2L_pic")) || [];
+
+let item = items[index];
+
+let newNote = prompt(
+"Edit your note:",
+item.note
+);
+
+if(newNote===null) return;
+
+item.note = newNote.trim();
+
+localStorage.setItem(
+"my2L_pic",
+JSON.stringify(items)
+);
+
+loadGallery();
+
+}
+
+  
 function deleteItem(index){
 
 let items=
