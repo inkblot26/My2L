@@ -274,6 +274,10 @@ autoplay
 playsinline>
 </video>
 
+<button id="switchCamera">
+🔄 Switch Camera
+</button>
+  
 <button id="capture">
 📷 Capture Photo
 </button>
@@ -337,19 +341,49 @@ const video = document.getElementById("camera");
 const canvas = document.getElementById("canvas");
 const preview = document.getElementById("preview");
 
+let stream;
+let useFront = false;
+
+startCamera();
+
+function startCamera(){
+
+if(stream){
+
+stream.getTracks().forEach(track=>track.stop());
+
+}
+
 navigator.mediaDevices.getUserMedia({
-video:true
-})
-.then(stream=>{
 
-video.srcObject=stream;
+video:{
+facingMode:useFront ? "user" : "environment"
+}
 
 })
+
+.then(s=>{
+
+stream=s;
+video.srcObject=s;
+
+})
+
 .catch(()=>{
 
 alert("Camera not available.");
 
 });
+
+}
+
+document.getElementById("switchCamera").onclick=function(){
+
+useFront=!useFront;
+
+startCamera();
+
+}  
 
 document.getElementById("capture").onclick=function(){
 
