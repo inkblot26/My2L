@@ -126,29 +126,15 @@ resize:vertical;
 }
 
 /* =========================
-BUTTONS
+CAMERA
 ========================= */
 
-button{
+#camera{
 width:100%;
-padding:12px;
-margin-top:12px;
-background:#4f46e5;
-color:white;
-border:none;
-border-radius:10px;
-font-size:15px;
-font-weight:bold;
-cursor:pointer;
+margin-top:15px;
+background:black;
+border-radius:12px;
 }
-
-button:hover{
-background:#372fc7;
-}
-
-/* =========================
-IMAGE / CANVAS
-========================= */
 
 img,
 canvas{
@@ -167,6 +153,27 @@ padding:12px;
 margin-top:15px;
 border-radius:10px;
 word-break:break-word;
+}
+
+/* =========================
+BUTTONS
+========================= */
+
+button{
+width:100%;
+padding:12px;
+margin-top:12px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#372fc7;
 }
 
 /* =========================
@@ -229,21 +236,21 @@ Home
 </div>
 
 <p class="subtitle">
-Generate QR codes or scan them from saved images.
+Generate QR codes or scan them using your camera or saved images.
 </p>
 
 </header>
 
 <div class="container">
 
-<!-- SCAN -->
+<!-- SCAN QR -->
 
 <div class="card">
 
-<h2>Scan QR from Image</h2>
+<h2>Scan QR Code</h2>
 
 <p class="helper">
-Upload a saved image containing a QR code. The decoded result will appear below.
+Upload a QR image or scan one directly using your camera.
 </p>
 
 <input
@@ -251,10 +258,31 @@ type="file"
 id="upload"
 accept="image/*">
 
+<hr style="margin:20px 0;border:none;border-top:1px solid #ddd;">
+
+<video
+id="camera"
+autoplay
+playsinline>
+</video>
+
+<button id="switchCamera">
+🔄 Switch Camera
+</button>
+
+<button id="captureBtn">
+📷 Capture & Scan QR
+</button>
+
 <img id="preview">
 
 <canvas
 id="canvas"
+style="display:none;">
+</canvas>
+
+<canvas
+id="captureCanvas"
 style="display:none;">
 </canvas>
 
@@ -279,7 +307,7 @@ No QR detected yet.
 <h2>Generate QR Code</h2>
 
 <p class="helper">
-Enter any website, text, phone number, or other information to generate a QR code.
+Create a QR code from text, links, phone numbers, Wi-Fi passwords, or anything else.
 </p>
 
 <textarea
@@ -299,6 +327,10 @@ placeholder="Enter text or website...">
 
 </div>
 
+<div class="footer">
+my2L © 2026 | Simple Tools For Everyday Life
+</div>
+
 <script>
 
 const upload=document.getElementById("upload");
@@ -311,7 +343,7 @@ const captureCanvas=document.getElementById("captureCanvas");
 const captureCtx=captureCanvas.getContext("2d");
 
 let decoded="";
-let stream;
+let stream=null;
 let useFront=false;
 
 /* =========================
@@ -329,7 +361,7 @@ stream.getTracks().forEach(track=>track.stop());
 navigator.mediaDevices.getUserMedia({
 
 video:{
-facingMode:useFront?"user":"environment"
+facingMode:useFront ? "user" : "environment"
 }
 
 })
@@ -343,9 +375,7 @@ camera.srcObject=s;
 
 .catch(()=>{
 
-camera.style.display="none";
-document.getElementById("captureBtn").style.display="none";
-document.getElementById("switchCamera").style.display="none";
+alert("Unable to access camera.");
 
 });
 
@@ -363,7 +393,7 @@ startCamera();
 };
 
 /* =========================
-CAPTURE QR
+CAPTURE FROM CAMERA
 ========================= */
 
 document.getElementById("captureBtn").onclick=function(){
@@ -374,7 +404,9 @@ captureCanvas.height=camera.videoHeight;
 captureCtx.drawImage(
 camera,
 0,
-0
+0,
+captureCanvas.width,
+captureCanvas.height
 );
 
 scanCanvas(captureCanvas);
@@ -385,7 +417,7 @@ scanCanvas(captureCanvas);
 UPLOAD IMAGE
 ========================= */
 
-upload.onchange=e=>{
+upload.onchange=function(e){
 
 const file=e.target.files[0];
 
@@ -414,19 +446,25 @@ img.src=URL.createObjectURL(file);
 SCAN QR
 ========================= */
 
-function scanCanvas(sourceCanvas){
+function scanCanvas(source){
 
-const imageData=sourceCanvas.getContext("2d").getImageData(
+const imageData=source
+.getContext("2d")
+.getImageData(
 0,
 0,
-sourceCanvas.width,
-sourceCanvas.height
+source.width,
+source.height
 );
 
 const code=jsQR(
+
 imageData.data,
-sourceCanvas.width,
-sourceCanvas.height
+
+source.width,
+
+source.height
+
 );
 
 if(code){
@@ -438,7 +476,9 @@ document.getElementById("result").innerHTML=decoded;
 }else{
 
 decoded="";
-document.getElementById("result").innerHTML="No QR Code Found.";
+
+document.getElementById("result").innerHTML=
+"No QR Code Found.";
 
 }
 
@@ -464,13 +504,18 @@ OPEN LINK
 
 function openResult(){
 
-if(decoded.startsWith("http://") || decoded.startsWith("https://")){
+if(decoded==="") return;
+
+if(
+decoded.startsWith("http://") ||
+decoded.startsWith("https://")
+){
 
 window.open(decoded,"_blank");
 
 }else{
 
-alert("Result is not a website.");
+alert("This QR does not contain a website.");
 
 }
 
@@ -482,9 +527,18 @@ GENERATE QR
 
 function generateQR(){
 
-const text=document.getElementById("qrtext").value.trim();
+const text=document
+.getElementById("qrtext")
+.value
+.trim();
 
-if(text==="") return;
+if(text===""){
+
+alert("Please enter some text.");
+
+return;
+
+}
 
 QRCode.toCanvas(
 
@@ -498,7 +552,11 @@ width:260
 
 function(error){
 
-if(error) console.error(error);
+if(error){
+
+console.error(error);
+
+}
 
 }
 
@@ -514,9 +572,18 @@ function downloadQR(){
 
 const qr=document.getElementById("qrcode");
 
+if(qr.width===0){
+
+alert("Generate a QR code first.");
+
+return;
+
+}
+
 const link=document.createElement("a");
 
 link.download="my2L_QR.png";
+
 link.href=qr.toDataURL("image/png");
 
 link.click();
