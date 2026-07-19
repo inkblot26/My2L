@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>what2QR</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f4f4;
+margin:0;
+padding:20px;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+h1{
+text-align:center;
+}
+
+.section{
+margin-top:30px;
+}
+
+button{
+padding:10px 18px;
+cursor:pointer;
+margin-top:10px;
+}
+
+textarea,
+input{
+width:100%;
+padding:10px;
+box-sizing:border-box;
+margin-top:10px;
+}
+
+canvas{
+margin-top:15px;
+}
+
+#result{
+background:#eee;
+padding:10px;
+border-radius:8px;
+word-break:break-all;
+margin-top:10px;
+}
+
+img{
+max-width:100%;
+margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📱 what2QR</h1>
+
+<p>
+Scan QR codes using your camera or saved images, and create your own QR codes.
+</p>
+
+<hr>
+
+<div class="section">
+
+<h2>📷 Scan QR from Image</h2>
+
+<input type="file" id="upload" accept="image/*">
+
+<img id="preview">
+
+<canvas id="canvas" style="display:none;"></canvas>
+
+<div id="result">
+No QR detected yet.
+</div>
+
+<button onclick="copyResult()">
+Copy Result
+</button>
+
+<button onclick="openResult()">
+Open Link
+</button>
+
+</div>
+
+<hr>
+
+<div class="section">
+
+<h2>✨ Generate QR</h2>
+
+<textarea
+id="qrtext"
+placeholder="Enter text or website..."></textarea>
+
+<button onclick="generateQR()">
+Generate QR
+</button>
+
+<br>
+
+<canvas id="qrcode"></canvas>
+
+<br>
+
+<button onclick="downloadQR()">
+Download QR
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const upload=document.getElementById("upload");
+const preview=document.getElementById("preview");
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+
+let decoded="";
+
+upload.onchange=e=>{
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+const img=new Image();
+
+img.onload=function(){
+
+preview.src=img.src;
+
+canvas.width=img.width;
+canvas.height=img.height;
+
+ctx.drawImage(img,0,0);
+
+const imageData=ctx.getImageData(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+const code=jsQR(
+imageData.data,
+canvas.width,
+canvas.height
+);
+
+if(code){
+
+decoded=code.data;
+
+document.getElementById("result").innerHTML=decoded;
+
+}else{
+
+decoded="";
+
+document.getElementById("result").innerHTML="No QR Code Found.";
+
+}
+
+}
+
+img.src=URL.createObjectURL(file);
+
+}
+
+function copyResult(){
+
+if(decoded=="")return;
+
+navigator.clipboard.writeText(decoded);
+
+alert("Copied!");
+
+}
+
+function openResult(){
+
+if(decoded.startsWith("http")){
+
+window.open(decoded,"_blank");
+
+}else{
+
+alert("Result is not a website.");
+
+}
+
+}
+
+function generateQR(){
+
+const text=document.getElementById("qrtext").value;
+
+QRious=false;
+
+QRCode.toCanvas(
+
+document.getElementById("qrcode"),
+
+text,
+
+function(error){
+
+if(error)console.error(error);
+
+}
+
+);
+
+}
+
+function downloadQR(){
+
+const canvas=document.getElementById("qrcode");
+
+const link=document.createElement("a");
+
+link.download="QR.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+}
+
+</script>
+
+</body>
+</html>
