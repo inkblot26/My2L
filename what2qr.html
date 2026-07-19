@@ -3,68 +3,211 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>what2QR</title>
+<title>What2QR - my2L</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <style>
 
-body{
-font-family:Arial;
-background:#f4f4f4;
+*{
 margin:0;
-padding:20px;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
+
+body{
+background:#f5f7fb;
+color:#333;
+}
+
+/* =========================
+HEADER
+========================= */
+
+header{
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+color:white;
+padding:50px 20px;
+text-align:center;
+position:relative;
+}
+
+.title{
+font-size:44px;
+font-weight:bold;
+}
+
+.title .what{
+color:white;
+}
+
+.title .qr{
+color:#ffd700;
+}
+
+.subtitle{
+font-size:18px;
+margin-top:10px;
+}
+
+/* =========================
+HOME BUTTON
+========================= */
+
+.home-btn{
+position:absolute;
+top:8px;
+left:8px;
+padding:4px 8px;
+font-size:11px;
+background:white;
+color:black;
+border:none;
+border-radius:6px;
+cursor:pointer;
+width:auto;
+}
+
+/* =========================
+LAYOUT
+========================= */
 
 .container{
-max-width:700px;
+max-width:900px;
 margin:auto;
+padding:25px;
+}
+
+.card{
 background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,.15);
+padding:25px;
+margin:20px 0;
+border-radius:16px;
+box-shadow:0 6px 18px rgba(0,0,0,.08);
 }
 
-h1{
-text-align:center;
+/* =========================
+TEXT
+========================= */
+
+h2{
+font-size:22px;
+margin-bottom:8px;
 }
 
-.section{
-margin-top:30px;
+.helper{
+font-size:14px;
+color:#666;
+margin-bottom:15px;
+line-height:1.5;
 }
+
+/* =========================
+INPUTS
+========================= */
+
+input,
+textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:14px;
+}
+
+textarea{
+height:100px;
+resize:vertical;
+}
+
+/* =========================
+BUTTONS
+========================= */
 
 button{
-padding:10px 18px;
-cursor:pointer;
-margin-top:10px;
-}
-
-textarea,
-input{
 width:100%;
-padding:10px;
-box-sizing:border-box;
-margin-top:10px;
+padding:12px;
+margin-top:12px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:10px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
 }
 
+button:hover{
+background:#372fc7;
+}
+
+/* =========================
+IMAGE / CANVAS
+========================= */
+
+img,
 canvas{
+max-width:100%;
 margin-top:15px;
+border-radius:10px;
+}
+
+#preview{
+display:block;
 }
 
 #result{
-background:#eee;
-padding:10px;
-border-radius:8px;
-word-break:break-all;
-margin-top:10px;
+background:#eef6ff;
+padding:12px;
+margin-top:15px;
+border-radius:10px;
+word-break:break-word;
 }
 
-img{
-max-width:100%;
-margin-top:15px;
+/* =========================
+FOOTER
+========================= */
+
+.footer{
+margin-top:50px;
+background:#222;
+color:white;
+text-align:center;
+padding:20px;
+font-size:13px;
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.title{
+font-size:34px;
+}
+
+.subtitle{
+font-size:15px;
+}
+
+.container{
+padding:15px;
+}
+
+.card{
+padding:18px;
+}
+
+button{
+font-size:14px;
+}
+
 }
 
 </style>
@@ -73,65 +216,86 @@ margin-top:15px;
 
 <body>
 
-<div class="container">
+<header>
 
-<h1>📱 what2QR</h1>
+<button
+class="home-btn"
+onclick="location.href='index.html'">
+Home
+</button>
 
-<p>
-Scan QR codes using your camera or saved images, and create your own QR codes.
+<div class="title">
+<span class="what">What</span><span class="qr">2QR</span>
+</div>
+
+<p class="subtitle">
+Generate QR codes or scan them from saved images.
 </p>
 
-<hr>
+</header>
 
-<div class="section">
+<div class="container">
 
-<h2>📷 Scan QR from Image</h2>
+<!-- SCAN -->
 
-<input type="file" id="upload" accept="image/*">
+<div class="card">
+
+<h2>Scan QR from Image</h2>
+
+<p class="helper">
+Upload a saved image containing a QR code. The decoded result will appear below.
+</p>
+
+<input
+type="file"
+id="upload"
+accept="image/*">
 
 <img id="preview">
 
-<canvas id="canvas" style="display:none;"></canvas>
+<canvas
+id="canvas"
+style="display:none;">
+</canvas>
 
 <div id="result">
 No QR detected yet.
 </div>
 
 <button onclick="copyResult()">
-Copy Result
+📋 Copy Result
 </button>
 
 <button onclick="openResult()">
-Open Link
+🌐 Open Link
 </button>
 
 </div>
 
-<hr>
+<!-- GENERATE -->
 
-<div class="section">
+<div class="card">
 
-<h2>✨ Generate QR</h2>
+<h2>Generate QR Code</h2>
+
+<p class="helper">
+Enter any website, text, phone number, or other information to generate a QR code.
+</p>
 
 <textarea
 id="qrtext"
-placeholder="Enter text or website..."></textarea>
+placeholder="Enter text or website...">
+</textarea>
 
 <button onclick="generateQR()">
-Generate QR
+✨ Generate QR
 </button>
-
-<br>
 
 <canvas id="qrcode"></canvas>
 
-<br>
-
 <button onclick="downloadQR()">
-Download QR
+💾 Download QR
 </button>
-
-</div>
 
 </div>
 
@@ -142,7 +306,84 @@ const preview=document.getElementById("preview");
 const canvas=document.getElementById("canvas");
 const ctx=canvas.getContext("2d");
 
+const camera=document.getElementById("camera");
+const captureCanvas=document.getElementById("captureCanvas");
+const captureCtx=captureCanvas.getContext("2d");
+
 let decoded="";
+let stream;
+let useFront=false;
+
+/* =========================
+START CAMERA
+========================= */
+
+startCamera();
+
+function startCamera(){
+
+if(stream){
+stream.getTracks().forEach(track=>track.stop());
+}
+
+navigator.mediaDevices.getUserMedia({
+
+video:{
+facingMode:useFront?"user":"environment"
+}
+
+})
+
+.then(s=>{
+
+stream=s;
+camera.srcObject=s;
+
+})
+
+.catch(()=>{
+
+camera.style.display="none";
+document.getElementById("captureBtn").style.display="none";
+document.getElementById("switchCamera").style.display="none";
+
+});
+
+}
+
+/* =========================
+SWITCH CAMERA
+========================= */
+
+document.getElementById("switchCamera").onclick=function(){
+
+useFront=!useFront;
+startCamera();
+
+};
+
+/* =========================
+CAPTURE QR
+========================= */
+
+document.getElementById("captureBtn").onclick=function(){
+
+captureCanvas.width=camera.videoWidth;
+captureCanvas.height=camera.videoHeight;
+
+captureCtx.drawImage(
+camera,
+0,
+0
+);
+
+scanCanvas(captureCanvas);
+
+};
+
+/* =========================
+UPLOAD IMAGE
+========================= */
 
 upload.onchange=e=>{
 
@@ -161,17 +402,31 @@ canvas.height=img.height;
 
 ctx.drawImage(img,0,0);
 
-const imageData=ctx.getImageData(
+scanCanvas(canvas);
+
+}
+
+img.src=URL.createObjectURL(file);
+
+};
+
+/* =========================
+SCAN QR
+========================= */
+
+function scanCanvas(sourceCanvas){
+
+const imageData=sourceCanvas.getContext("2d").getImageData(
 0,
 0,
-canvas.width,
-canvas.height
+sourceCanvas.width,
+sourceCanvas.height
 );
 
 const code=jsQR(
 imageData.data,
-canvas.width,
-canvas.height
+sourceCanvas.width,
+sourceCanvas.height
 );
 
 if(code){
@@ -183,20 +438,19 @@ document.getElementById("result").innerHTML=decoded;
 }else{
 
 decoded="";
-
 document.getElementById("result").innerHTML="No QR Code Found.";
 
 }
 
 }
 
-img.src=URL.createObjectURL(file);
-
-}
+/* =========================
+COPY
+========================= */
 
 function copyResult(){
 
-if(decoded=="")return;
+if(decoded==="") return;
 
 navigator.clipboard.writeText(decoded);
 
@@ -204,9 +458,13 @@ alert("Copied!");
 
 }
 
+/* =========================
+OPEN LINK
+========================= */
+
 function openResult(){
 
-if(decoded.startsWith("http")){
+if(decoded.startsWith("http://") || decoded.startsWith("https://")){
 
 window.open(decoded,"_blank");
 
@@ -218,11 +476,15 @@ alert("Result is not a website.");
 
 }
 
+/* =========================
+GENERATE QR
+========================= */
+
 function generateQR(){
 
-const text=document.getElementById("qrtext").value;
+const text=document.getElementById("qrtext").value.trim();
 
-QRious=false;
+if(text==="") return;
 
 QRCode.toCanvas(
 
@@ -230,9 +492,13 @@ document.getElementById("qrcode"),
 
 text,
 
+{
+width:260
+},
+
 function(error){
 
-if(error)console.error(error);
+if(error) console.error(error);
 
 }
 
@@ -240,15 +506,18 @@ if(error)console.error(error);
 
 }
 
+/* =========================
+DOWNLOAD QR
+========================= */
+
 function downloadQR(){
 
-const canvas=document.getElementById("qrcode");
+const qr=document.getElementById("qrcode");
 
 const link=document.createElement("a");
 
-link.download="QR.png";
-
-link.href=canvas.toDataURL();
+link.download="my2L_QR.png";
+link.href=qr.toDataURL("image/png");
 
 link.click();
 
@@ -257,4 +526,4 @@ link.click();
 </script>
 
 </body>
-</html>
+</html>  
