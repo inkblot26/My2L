@@ -453,73 +453,33 @@ amount.value="";
 }
 
 function addExpense(){
-
-alert("1");
-
 let name=document.getElementById("expName").value;
 let amount=Number(document.getElementById("amount").value);
 let date=document.getElementById("date").value;
 let notes=document.getElementById("notes").value;
-
-alert("2");
-
 let paid=[];
-
 document.querySelectorAll(".paid-check").forEach(check=>{
-
     if(check.checked){
-
         let input=document.querySelector(
         `.paid-amount[data-id="${check.dataset.id}"]`
         );
-
-        alert("Input value: " + input.value);
-
         paid.push({
             member:Number(check.dataset.id),
             amount:Number(input.value)
         });
-
-        alert("Added payer");
     }
-
 });
-
-alert("After paid loop");
-
 let totalPaid = 0;
 paid.forEach(p=>{
     totalPaid += p.amount;
 });
-
-alert("After totalPaid");   
 if(Math.abs(totalPaid-amount)>0.01){
-alert(
-`Total paid is ₱${totalPaid} but expense amount is ₱${amount}.`
-);
 return;
 }
-   
 let selected=[];
 document.querySelectorAll("#participants input:checked")
 .forEach(x=>selected.push(Number(x.value)));
-
-   alert("4");
-   
-if(
-!name ||
-amount<=0 ||
-selected.length===0 ||
-paid.length===0
-){
-alert("Please complete all required fields.");
-return;
-}
-
 let data={name,amount,paid,selected,date,notes};
-
-   alert("5");
-   
 if(editIndex>=0){
 expenses[editIndex]=data;
 editIndex=-1;
@@ -529,9 +489,6 @@ expenses.push(data);
 clearExpenseForm();
 save();
 renderAll();
-
-   alert("6");
-   
 }
 
 function renderExpenses(){
