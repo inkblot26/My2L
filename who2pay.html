@@ -336,7 +336,6 @@ Check everyone who contributed to the payment and enter how much each paid.
 </div>
 
 <!-- Clear Button -->   
-<div id="settlement"></div>
 <button onclick="clearEverything()">
 Clear Everything
 </button>   
@@ -605,27 +604,6 @@ balances[person] += p.amount;
 });
 renderSettlement(balances);
 renderMemberSummary(balances);
-}
-
-function simplifyDebts(){
-
-members.forEach(a=>{
-members.forEach(b=>{
-
-    if(a.name === b.name) return;
-
-    let ab = debts[a.name][b.name];
-    let ba = debts[b.name][a.name];
-
-    if(ab > 0 && ba > 0){
-
-        let min = Math.min(ab, ba);
-
-        debts[a.name][b.name] -= min;
-        debts[b.name][a.name] -= min;
-    }
-});
-});
 }
 
 function clearExpenseForm(){
