@@ -523,202 +523,121 @@ document
 document
 .getElementById("startSession")
 .onclick=function(){
-document.getElementById("setup").style.display="none";
-document.getElementById("session").style.display="block";
-document.getElementById("soundName").innerHTML=
+ document.getElementById("setup").style.display="none";
+ document.getElementById("session").style.display="block";
+ document.getElementById("soundName").innerHTML=
+ 
+ selectedSound.charAt(0).toUpperCase()+selectedSound.slice(1);
 
-"🌧 "+selectedSound.charAt(0).toUpperCase()+selectedSound.slice(1);
+ // stop all sounds
+ Object.values(sounds).forEach(sound=>{
+  sound.pause();
+  sound.currentTime=0;
+ });
 
-// stop all sounds
+ // play selected sound
+ sounds[selectedSound].play();
+ 
+ // timer
+ remainingSeconds=selectedTime*60;
+ updateTimer();
+ timerInterval=setInterval(function(){
+ remainingSeconds--;
+ updateTimer();
+ if(remainingSeconds<=0){
+  finishSession();
+ }
 
-Object.values(sounds).forEach(sound=>{
-
-sound.pause();
-sound.currentTime=0;
-
-});
-
-// play selected sound
-
-sounds[selectedSound].play();
-
-// timer
-
-remainingSeconds=selectedTime*60;
-
-updateTimer();
-
-timerInterval=setInterval(function(){
-
-remainingSeconds--;
-
-updateTimer();
-
-if(remainingSeconds<=0){
-
-finishSession();
-
-}
-
-},1000);
+ },1000);
 
 // breathing
-
 startBreathing();
-
 };
 
 // =========================
 // TIMER
 // =========================
-
 function updateTimer(){
-
-let minutes=Math.floor(remainingSeconds/60);
-
-let seconds=remainingSeconds%60;
-
-document.getElementById("timer").innerHTML=
-
-String(minutes).padStart(2,"0")
-
-+":"
-
-+
-
-String(seconds).padStart(2,"0");
-
+ let minutes=Math.floor(remainingSeconds/60);
+ let seconds=remainingSeconds%60;
+ document.getElementById("timer").innerHTML=
+ String(minutes).padStart(2,"0")
+ +":"
+ +
+ String(seconds).padStart(2,"0");
 }
 
 // =========================
 // BREATHING
 // =========================
-
 function startBreathing(){
-
 const circle=document.getElementById("circle");
-
 clearInterval(breathingInterval);
-
 if(selectedPattern==="44"){
-
-circle.innerHTML="Breathe In";
-
-circle.classList.add("expand");
-
-let inhale=true;
-
-breathingInterval=setInterval(function(){
-
-if(inhale){
-
-circle.innerHTML="Breathe Out";
-
-circle.classList.remove("expand");
-
-circle.classList.add("contract");
-
-}else{
-
-circle.innerHTML="Breathe In";
-
-circle.classList.remove("contract");
-
-circle.classList.add("expand");
-
+ circle.innerHTML="Breathe In";
+ circle.classList.add("expand");
+ let inhale=true;
+ breathingInterval=setInterval(function(){
+ if(inhale){
+  circle.innerHTML="Breathe Out";
+  circle.classList.remove("expand");
+  circle.classList.add("contract");
+ }else{
+  circle.innerHTML="Breathe In";
+  circle.classList.remove("contract");
+  circle.classList.add("expand");
+ }
+ inhale=!inhale;
+ },4000);
 }
-
-inhale=!inhale;
-
-},4000);
-
-}
-
 else{
-
-circle.innerHTML="Breathe In";
-
-circle.classList.add("expand");
-
-let stage=0;
-
-function cycle(){
-
-if(stage===0){
-
-circle.innerHTML="Breathe In";
-
-circle.classList.remove("contract");
-
-circle.classList.add("expand");
-
-setTimeout(cycle,4000);
-
-}
-
-else if(stage===1){
-
-circle.innerHTML="Hold";
-
-setTimeout(cycle,7000);
+ circle.innerHTML="Breathe In";
+ circle.classList.add("expand");
+ let stage=0;
+ function cycle(){
+ if(stage===0){
+  circle.innerHTML="Breathe In";
+  circle.classList.remove("contract");
+  circle.classList.add("expand");
+  setTimeout(cycle,4000);
+ }
+ else if(stage===1){
+  circle.innerHTML="Hold";
+  setTimeout(cycle,7000);
+  }
+  else{
+   circle.innerHTML="Breathe Out";
+   circle.classList.remove("expand");
+   circle.classList.add("contract");
+   setTimeout(cycle,8000);
+  }
+  stage=(stage+1)%3;
+ }
+ cycle();
+ }
 
 }
-
-else{
-
-circle.innerHTML="Breathe Out";
-
-circle.classList.remove("expand");
-
-circle.classList.add("contract");
-
-setTimeout(cycle,8000);
-
-}
-
-stage=(stage+1)%3;
-
-}
-
-cycle();
-
-}
-
-}
-
 // =========================
 // STOP
 // =========================
-
 document
 .getElementById("stopSession")
 .onclick=function(){
-
 finishSession();
-
 };
 
 // =========================
 // FINISH
 // =========================
-
 function finishSession(){
-
 clearInterval(timerInterval);
-
 clearInterval(breathingInterval);
-
 Object.values(sounds).forEach(sound=>{
-
 sound.pause();
 sound.currentTime=0;
-
 });
-
 document.getElementById("session").style.display="none";
-
 document.getElementById("ending").style.display="block";
-
 }
 
 </script>
