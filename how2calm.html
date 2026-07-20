@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
@@ -10,22 +9,17 @@ content="width=device-width, initial-scale=1.0">
 <title>how2Calm - my2L</title>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
+  *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+  }
 
 body{
-
-background:#f5f7fb;
-
-color:#333;
-
-min-height:100vh;
-
+  background:#f5f7fb;
+  color:#333;
+  min-height:100vh;
 }
 
 /*=========================
@@ -33,621 +27,392 @@ HEADER
 =========================*/
 
 header{
-
-background:
-linear-gradient(135deg,#4f46e5,#7c3aed);
-
-color:white;
-
-padding:50px 20px;
-
-text-align:center;
-
-position:relative;
-
-box-shadow:0 6px 20px rgba(0,0,0,.12);
-
+  background:
+  linear-gradient(135deg,#4f46e5,#7c3aed);
+  color:white;
+  padding:50px 20px;
+  text-align:center;
+  position:relative;
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
 }
 
 .title{
-
-font-size:46px;
-
-font-weight:bold;
-
+  font-size:46px;
+  font-weight:bold;
 }
 
 .title .how{
-
-color:white;
-
+  color:white;
 }
 
 .title .calm{
-
-color:#ffd700;
-
+  color:#ffd700;
 }
 
 .subtitle{
-
-margin-top:10px;
-
-font-size:18px;
-
-opacity:.95;
-
+  margin-top:10px;
+  font-size:18px;
+  opacity:.95;
 }
 
 /*=========================
 HOME BUTTON
 =========================*/
-
 .home-btn{
-
-position:absolute;
-
-top:10px;
-
-left:10px;
-
-padding:6px 10px;
-
-border:none;
-
-border-radius:8px;
-
-cursor:pointer;
-
-background:white;
-
-color:#333;
-
-font-size:12px;
-
-font-weight:bold;
-
+  position:absolute;
+  top:10px;
+  left:10px;
+  padding:6px 10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:white;
+  color:#333;
+  font-size:12px;
+  font-weight:bold;
 }
 
 /*=========================
 LAYOUT
 =========================*/
-
 .container{
-
-max-width:850px;
-
-margin:auto;
-
-padding:25px;
-
+  max-width:850px;
+  margin:auto;
+  padding:25px;
 }
 
 /*=========================
 CARD
 =========================*/
-
 .card{
-
-background:white;
-
-padding:25px;
-
-margin-top:25px;
-
-border-radius:18px;
-
-box-shadow:0 8px 24px rgba(0,0,0,.08);
-
+  background:white;
+  padding:25px;
+  margin-top:25px;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
 }
 
 /*=========================
 HEADINGS
 =========================*/
-
 h2{
-
-margin-bottom:10px;
-
+  margin-bottom:10px;
 }
 
 .helper{
-
-color:#666;
-
-font-size:14px;
-
-margin-bottom:18px;
-
-line-height:1.6;
-
+  color:#666;
+  font-size:14px;
+  margin-bottom:18px;
+  line-height:1.6;
 }
 
 /*=========================
 OPTIONS
 =========================*/
-
 .options{
-
-display:grid;
-
-grid-template-columns:
-repeat(auto-fit,minmax(160px,1fr));
-
-gap:15px;
-
-margin-top:15px;
-
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+  margin-top:15px;
 }
 
 .option{
-
-padding:15px;
-
-border:1px solid #ddd;
-
-border-radius:12px;
-
-text-align:center;
-
-cursor:pointer;
-
-transition:.25s;
-
-background:white;
-
+  padding:15px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  text-align:center;
+  cursor:pointer;
+  transition:.25s;
+  background:white;
 }
 
 .option:hover{
-
-background:#f5f5ff;
-
-transform:translateY(-2px);
-
+  background:#f5f5ff;
+  transform:translateY(-2px);
 }
 
 .option.active{
-
-background:#4f46e5;
-
-color:white;
-
-border-color:#4f46e5;
-
+  background:#4f46e5;
+  color:white;
+  border-color:#4f46e5;
 }
 
 /*=========================
 VOLUME
 =========================*/
-
 input[type=range]{
-
-width:100%;
-
-margin-top:15px;
-
+  width:100%;
+  margin-top:15px;
 }
 
 /*=========================
 START BUTTON
 =========================*/
-
 .start-btn{
-
-width:100%;
-
-padding:15px;
-
-margin-top:25px;
-
-border:none;
-
-border-radius:12px;
-
-background:#4f46e5;
-
-color:white;
-
-font-size:17px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.25s;
-
+  width:100%;
+  padding:15px;
+  margin-top:25px;
+  border:none;
+  border-radius:12px;
+  background:#4f46e5;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.25s;
 }
 
 .start-btn:hover{
-
-background:#372fc7;
-
+  background:#372fc7;
 }
 
 /*=========================
 SESSION
 =========================*/
-
 #session{
-
-display:none;
-
-text-align:center;
-
+  display:none;
+  text-align:center;
 }
 
 #soundName{
-
-font-size:18px;
-
-margin-bottom:20px;
-
-color:#4f46e5;
-
-font-weight:bold;
-
+  font-size:18px;
+  margin-bottom:20px;
+  color:#4f46e5;
+  font-weight:bold;
 }
 
 #timer{
-
-font-size:48px;
-
-margin-top:35px;
-
-font-weight:bold;
-
-color:#4f46e5;
-
+  font-size:48px;
+  margin-top:35px;
+  font-weight:bold;
+  color:#4f46e5;
 }
 
 /*=========================
 BREATHING CIRCLE
 =========================*/
-
 .circle{
-
-width:170px;
-height:170px;
-
-margin:40px auto;
-
-border-radius:50%;
-
-background:
-linear-gradient(135deg,#4f46e5,#7c3aed);
-
-display:flex;
-
-justify-content:center;
-align-items:center;
-
-font-size:22px;
-
-font-weight:bold;
-
-color:white;
-
-box-shadow:
-0 0 35px rgba(79,70,229,.35);
-
-transition:
-transform 4s linear;
-
+  width:170px;
+  height:170px;
+  margin:40px auto;
+  border-radius:50%;
+  background:
+  linear-gradient(135deg,#4f46e5,#7c3aed);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:22px;
+  font-weight:bold;
+  color:white;
+  box-shadow:
+  0 0 35px rgba(79,70,229,.35);
+  transition:
+  transform 4s linear;
 }
   
 /*=========================
 STOP BUTTON
 =========================*/
-
 .stop-btn{
-
-background:#c65a5a;
-
-width:100%;
-
-padding:15px;
-
-border:none;
-
-border-radius:12px;
-
-margin-top:35px;
-
-color:white;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
+  background:#c65a5a;
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  margin-top:35px;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
 .stop-btn:hover{
-
-background:#af4a4a;
-
+  background:#af4a4a;
 }
 
 /*=========================
 ENDING
 =========================*/
-
 #ending{
-
-display:none;
-
-text-align:center;
-
-padding:40px 10px;
-
+  display:none;
+  text-align:center;
+  padding:40px 10px;
 }
 
 #ending h2{
-
-font-size:34px;
-
-color:#4f46e5;
-
-margin-bottom:20px;
-
+  font-size:34px;
+  color:#4f46e5;
+  margin-bottom:20px;
 }
 
 #ending p{
-
-font-size:18px;
-
-line-height:1.8;
-
-color:#555;
-
+  font-size:18px;
+  line-height:1.8;
+  color:#555;
 }
 
 /*=========================
 FOOTER
 =========================*/
-
 .footer{
-
-margin-top:50px;
-
-background:#23302b;
-
-color:white;
-
-padding:20px;
-
-text-align:center;
-
-font-size:13px;
-
+  margin-top:50px;
+  background:#23302b;
+  color:white;
+  padding:20px;
+  text-align:center;
+  font-size:13px;
 }
 
 /*=========================
 MOBILE
 =========================*/
-
 @media(max-width:768px){
+  .title{
+    font-size:34px;
+  }
 
-.title{
+  .subtitle{
+    font-size:15px;
+  }
 
-font-size:34px;
+  .circle{
+    width:140px;
+    height:140px;
+    font-size:18px;
+  }
 
-}
-
-.subtitle{
-
-font-size:15px;
-
-}
-
-.circle{
-
-width:140px;
-height:140px;
-
-font-size:18px;
-
-}
-
-#timer{
-
-font-size:38px;
-
-}
-
+  #timer{
+    font-size:38px;
+  }
 }
 
 </style>
-
 </head>
 
 <body>
-
 <header>
+  <button
+    class="home-btn"
+    onclick="location.href='index.html'">
+    Home
+  </button>
 
-<button
-class="home-btn"
-onclick="location.href='index.html'">
-Home
-</button>
-
-<div class="title">
-<span class="how">How</span><span class="calm">2Calm</span>
-</div>
-
-<p class="subtitle">
-Pause, breathe, and reset with calming sounds and guided breathing.
-</p>
+  <div class="title">
+    <span class="how">How</span><span class="calm">2Calm</span>
+  </div>
+  
+  <p class="subtitle">
+    Pause, breathe, and reset with calming sounds and guided breathing.
+  </p>
 
 </header>
 
 <div class="container">
-
 <div class="card" id="setup">
-
-<h2>🌿 Create Your Calm Session</h2>
+<h2>Create Your Calm Session</h2>
 
 <p class="helper">
-
-Choose how long you'd like to relax,
-pick a calming sound,
-and let the breathing guide help you slow down.
-
+  Choose how long you'd like to relax, pick a calming sound, and let the breathing guide help you slow down.
 </p>
 
 <h3>⏱ Duration</h3>
-
 <div class="options" id="timeOptions">
-
-<div class="option active"
-data-time="1">
-1 Minute
-</div>
-
-<div class="option"
-data-time="3">
-3 Minutes
-</div>
-
-<div class="option"
-data-time="5">
-5 Minutes
-</div>
-
-<div class="option"
-data-time="10">
-10 Minutes
-</div>
-
+  <div class="option active"data-time="1">
+    1 Minute
+  </div>
+  <div class="option"data-time="3">
+    3 Minutes
+  </div>
+  <div class="option"data-time="5">
+    5 Minutes
+  </div>
+  <div class="option"data-time="10">
+    10 Minutes
+  </div>
 </div>
 
 <br>
-
 <h3>🌧 Ambient Sound</h3>
-
 <div class="options" id="soundOptions">
-
-<div class="option active"
-data-sound="rain">
-Rain
-</div>
-
-<div class="option"
-data-sound="ocean">
-Ocean
-</div>
-
-<div class="option"
-data-sound="forest">
-Forest
-</div>
-
-<div class="option"
-data-sound="wind">
-Wind
-</div>
-
+  <div class="option active"data-sound="rain">
+    Rain
+  </div>
+  <div class="option"data-sound="ocean">
+    Ocean
+  </div>
+  <div class="option"data-sound="forest">
+    Forest
+  </div>
+  <div class="option"data-sound="wind">
+    Wind
+  </div>
 </div>
 
 <br>
-
-<h3>🫁 Breathing Pattern</h3>
-
+<h3>🧘 Breathing Pattern</h3>
 <div class="options" id="breathOptions">
-
-<div class="option active"
-data-pattern="44">
-Box Breathing 
-</div>
-
-<div class="option"
-data-pattern="478">
-4–7–8 Breathing
-</div>
-
+  <div class="option active"data-pattern="44">
+    Box Breathing 
+  </div>
+  <div class="option"data-pattern="478">
+    4–7–8 Breathing
+  </div>
 </div>
 
 <br>
-
 <h3>🔊 Volume</h3>
-
 <input
-type="range"
-id="volume"
-min="0"
-max="1"
-step="0.01"
-value="0.6">
+  type="range"
+  id="volume"
+  min="0"
+  max="1"
+  step="0.01"
+  value="0.6">
 
 <button
-class="start-btn"
-id="startSession">
-
-🌿 Start Calm Session
-
+  class="start-btn"id="startSession">
+  Start Calm Session
 </button>
 
 </div>
-
+  
 <div class="card" id="session">
-
-<div id="soundName">
-🌧 Rain
+  <div id="soundName">
+    🌧 Rain
+  </div>
+  <div
+    class="circle"
+    id="circle">
+    Breathe
+  </div>
+  <div id="timer">
+    01:00
+  </div>
+  <button
+    class="stop-btn"
+    id="stopSession">
+    End Session
+  </button>
 </div>
-
-<div
-class="circle"
-id="circle">
-
-Breathe
-
-</div>
-
-<div id="timer">
-
-01:00
-
-</div>
-
-<button
-class="stop-btn"
-id="stopSession">
-
-End Session
-
-</button>
-
-</div>
-
+  
 <div class="card" id="ending">
 
-<h2>🌿 Well Done</h2>
-
+<h2>Well Done</h2>
 <p>
-
 You made time for yourself.
-
 <br><br>
-
 Whatever you're facing,
 you don't have to solve it all today.
-
 <br><br>
-
 Take another deep breath,
 and continue one step at a time.
-
 </p>
-
 <br>
 
 <button
-class="start-btn"
-onclick="location.reload()">
-
-Start Again
-
+  class="start-btn" onclick="location.reload()">
+  Start Again
 </button>
 
 </div>
@@ -655,9 +420,7 @@ Start Again
 </div>
 
 <div class="footer">
-
-my2L © 2026 | Simple Tools For Everyday Life
-
+  my2L © 2026 | Simple Tools For Everyday Life
 </div>
 
 <script>
@@ -665,55 +428,38 @@ my2L © 2026 | Simple Tools For Everyday Life
 // =========================
 // SETTINGS
 // =========================
-
 let selectedTime = 1;
 let selectedSound = "rain";
 let selectedPattern = "44";
-
 let timerInterval = null;
 let breathingInterval = null;
-
 let remainingSeconds = 60;
-
 // =========================
 // AUDIO
 // =========================
-
 const sounds = {
-
-rain: new Audio("sounds/rain.mp3"),
-ocean: new Audio("sounds/ocean.mp3"),
-forest: new Audio("sounds/forest.mp3"),
-wind: new Audio("sounds/wind.mp3")
-
+  rain: new Audio("sounds/rain.mp3"),
+  ocean: new Audio("sounds/ocean.mp3"),
+  forest: new Audio("sounds/forest.mp3"),
+  wind: new Audio("sounds/wind.mp3")
 };
-
+  
 Object.values(sounds).forEach(sound=>{
-
 sound.loop=true;
 sound.volume=0.6;
-
 });
 
 // =========================
 // OPTION SELECTION
 // =========================
-
 function activateOption(container){
-
-container.querySelectorAll(".option").forEach(option=>{
-
-option.onclick=function(){
-
-container.querySelectorAll(".option")
-.forEach(o=>o.classList.remove("active"));
-
-this.classList.add("active");
-
-};
-
-});
-
+  container.querySelectorAll(".option").forEach(option=>{
+  option.onclick=function(){
+  container.querySelectorAll(".option")
+  .forEach(o=>o.classList.remove("active"));
+  this.classList.add("active");
+  };
+  });
 }
 
 activateOption(document.getElementById("timeOptions"));
@@ -721,94 +467,64 @@ activateOption(document.getElementById("soundOptions"));
 activateOption(document.getElementById("breathOptions"));
 
 // duration
-
 document
 .querySelectorAll("#timeOptions .option")
 .forEach(option=>{
-
-option.onclick=function(){
-
-document
-.querySelectorAll("#timeOptions .option")
-.forEach(o=>o.classList.remove("active"));
-
-this.classList.add("active");
-
-selectedTime=
-parseInt(this.dataset.time);
-
-};
-
+  option.onclick=function(){
+    document
+    .querySelectorAll("#timeOptions .option")
+    .forEach(o=>o.classList.remove("active"));
+    this.classList.add("active");
+    selectedTime=
+    parseInt(this.dataset.time);
+  };
 });
 
 // sound
-
 document
 .querySelectorAll("#soundOptions .option")
 .forEach(option=>{
-
-option.onclick=function(){
-
-document
-.querySelectorAll("#soundOptions .option")
-.forEach(o=>o.classList.remove("active"));
-
-this.classList.add("active");
-
-selectedSound=this.dataset.sound;
-
-};
-
+  option.onclick=function(){
+    document
+    .querySelectorAll("#soundOptions .option")
+    .forEach(o=>o.classList.remove("active"));
+    this.classList.add("active");
+    selectedSound=this.dataset.sound;
+  };
 });
 
 // breathing
-
 document
 .querySelectorAll("#breathOptions .option")
 .forEach(option=>{
-
-option.onclick=function(){
-
-document
-.querySelectorAll("#breathOptions .option")
-.forEach(o=>o.classList.remove("active"));
-
-this.classList.add("active");
-
-selectedPattern=this.dataset.pattern;
-
-};
-
+  option.onclick=function(){
+    document
+    .querySelectorAll("#breathOptions .option")
+    .forEach(o=>o.classList.remove("active"));
+    this.classList.add("active");
+    selectedPattern=this.dataset.pattern;
+  };
 });
 
 // =========================
 // VOLUME
 // =========================
-
 document
 .getElementById("volume")
 .oninput=function(){
-
-Object.values(sounds).forEach(sound=>{
-
-sound.volume=this.value;
-
-});
-
+  Object.values(sounds).forEach(sound=>{
+    sound.volume=this.value;
+  });
 };
 
 // =========================
 // START SESSION
 // =========================
-
 document
 .getElementById("startSession")
 .onclick=function(){
-
 document.getElementById("setup").style.display="none";
-
 document.getElementById("session").style.display="block";
-
 document.getElementById("soundName").innerHTML=
 
 "🌧 "+selectedSound.charAt(0).toUpperCase()+selectedSound.slice(1);
