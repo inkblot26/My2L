@@ -243,6 +243,24 @@ font-size:11px;
 
 }
 
+/* =========================
+   Payment row
+========================= */   
+.payment-row{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:10px;
+}
+
+.payment-row input[type="number"]{
+flex:1;
+}
+
+.payment-row label{
+width:120px;
+}
+   
 </style>
 </head>
 
@@ -288,7 +306,10 @@ Split expenses and instantly see who owes whom.
 <textarea id="notes" placeholder="Notes (optional)"></textarea>
 
 <p class="helper"><b>Who paid?</b></p>
-<select id="payer"></select>
+<p class="helper">
+Check everyone who contributed to the payment and enter how much each paid.
+</p>
+<div id="paidBy"></div>
 
 <p class="helper"><b>Who are involved?</b></p>
 <div id="participants"></div>
@@ -337,7 +358,7 @@ let expenses =
 JSON.parse(localStorage.getItem("my2L_pay_expenses")) || [];
    
 let editIndex = -1;
-let debts = {};
+
    
 function addMember(){
 let name=document.getElementById("memberName").value;
@@ -345,7 +366,6 @@ if(!name) return;
 
 members.push({name});
 document.getElementById("memberName").value="";
-initDebts();
 save();
 renderAll();
 }
@@ -369,22 +389,7 @@ renderMembers();
 renderExpenseForm();
 renderExpenses();
 calculate();
-renderMemberSummary();
-renderSettlement();
 }
-
-function initDebts(){
-debts = {};
-
-members.forEach(m1=>{
-    debts[m1.name] = {};
-    members.forEach(m2=>{
-        if(m1.name !== m2.name){
-            debts[m1.name][m2.name] = 0;
-        }
-    });
-});
-}   
 
 function renderMembers(){
 let box=document.getElementById("members");
@@ -395,17 +400,56 @@ box.innerHTML+=`<div class="member">${m.name}</div>`;
 }
 
 function renderExpenseForm(){
-let payer=document.getElementById("payer");
-let participants=document.getElementById("participants");
-
-payer.innerHTML="";
+let participants =
+document.getElementById("participants");
+let paidBy =
+document.getElementById("paidBy");
 participants.innerHTML="";
-
+paidBy.innerHTML="";
 members.forEach((m,i)=>{
-payer.innerHTML+=`<option value="${i}">${m.name}</option>`;
-participants.innerHTML+=`
-<label><input type="checkbox" value="${i}"> ${m.name}</label>
+participants.innerHTML += `
+
+<label>
+   <input
+   type="checkbox"
+   value="${i}">
+   ${m.name}
+</label>
 `;
+
+paidBy.innerHTML += `
+
+<div class="payment-row">
+<label>
+   <input
+   type="checkbox"
+   class="paid-check"
+   data-id="${i}">
+   ${m.name}
+</label>
+
+<input
+type="number"
+class="paid-amount"
+data-id="${i}"
+placeholder="₱0"
+disabled>
+</div>
+`;
+});
+
+document
+.querySelectorAll(".paid-check")
+.forEach(check=>{
+check.onchange=function(){
+let amount=document.querySelector(
+`.paid-amount[data-id="${this.dataset.id}"]`
+);
+amount.disabled=!this.checked;
+if(!this.checked){
+amount.value="";
+}
+};
 });
 }
 
@@ -413,18 +457,50 @@ function addExpense(){
 
 let name=document.getElementById("expName").value;
 let amount=Number(document.getElementById("amount").value);
-let payer=Number(document.getElementById("payer").value);
 let date=document.getElementById("date").value;
 let notes=document.getElementById("notes").value;
 
+let paid=[];
+document
+.querySelectorAll(".paid-check")
+.forEach(check=>{
+if(check.checked){
+let amount=document.querySelector(
+`.paid-amount[data-id="${check.dataset.id}"}`
+).value;
+paid.push({
+member:Number(check.dataset.id),
+amount:Number(amount)
+});
+}
+});
+
+let totalPaid = 0;
+paid.forEach(p=>{
+totalPaid += p.amount;
+});
+if(Math.abs(totalPaid-amount)>0.01){
+alert(
+`Total paid is ₱${totalPaid} but expense amount is ₱${amount}.`
+);
+return;
+}
+   
 let selected=[];
 document.querySelectorAll("#participants input:checked")
 .forEach(x=>selected.push(Number(x.value)));
 
-if(!name||!amount||selected.length==0) return;
+if(
+!name ||
+amount<=0 ||
+selected.length===0 ||
+paid.length===0
+){
+alert("Please complete all required fields.");
+return;
+}
 
-let data={name,amount,payer,selected,date,notes};
-
+let data={name,amount,paid,selected,date,notes};
 if(editIndex>=0){
 expenses[editIndex]=data;
 editIndex=-1;
@@ -439,16 +515,26 @@ renderAll();
 function renderExpenses(){
 let box=document.getElementById("expenseList");
 box.innerHTML="";
-
 expenses.forEach((e,i)=>{
+let paidText=e.paid.map(p=>
+`${members[p.member].name} (₱${p.amount})`
+).join(", ");
 box.innerHTML+=`
 <div class="expense">
 <b>${e.name}</b> - ₱${e.amount}<br>
-Paid by: ${members[e.payer]?.name}<br>
-Shared: ${e.selected.map(x=>members[x]?.name).join(", ")}<br>
-
-<button class="small-btn" onclick="editExpense(${i})">Edit</button>
-<button class="small-btn" onclick="deleteExpense(${i})">Delete</button>
+Paid by: ${paidText}<br>
+Shared:
+${e.selected.map(x=>members[x].name).join(", ")}<br>
+<button
+class="small-btn"
+onclick="editExpense(${i})">
+Edit
+</button>
+<button
+class="small-btn"
+onclick="deleteExpense(${i})">
+Delete
+</button>
 </div>
 `;
 });
@@ -457,15 +543,37 @@ Shared: ${e.selected.map(x=>members[x]?.name).join(", ")}<br>
 function editExpense(i){
 let e=expenses[i];
 editIndex=i;
-
 document.getElementById("expName").value=e.name;
 document.getElementById("amount").value=e.amount;
 document.getElementById("date").value=e.date;
 document.getElementById("notes").value=e.notes;
-
-document.querySelectorAll("#participants input")
+document
+.querySelectorAll("#participants input")
 .forEach(x=>{
-x.checked=e.selected.includes(Number(x.value));
+x.checked=
+e.selected.includes(Number(x.value));
+});
+document
+.querySelectorAll(".paid-check")
+.forEach(c=>{
+c.checked=false;
+});
+document
+.querySelectorAll(".paid-amount")
+.forEach(a=>{
+a.value="";
+a.disabled=true;
+});
+e.paid.forEach(p=>{
+let check=document.querySelector(
+`.paid-check[data-id="${p.member}"]`
+);
+let amount=document.querySelector(
+`.paid-amount[data-id="${p.member}"]`
+);
+check.checked=true;
+amount.disabled=false;
+amount.value=p.amount;
 });
 }
 
@@ -476,29 +584,27 @@ renderAll();
 }
 
 function calculate(){
-
-initDebts();
-
-// STEP 1: build exact pairwise debts per expense
+let balances = {};
+members.forEach(m=>{
+balances[m.name]=0;
+});
 expenses.forEach(e=>{
+let share = e.amount / e.selected.length;
 
-    let payer = members[e.payer].name;
-    let participants = e.selected.map(i => members[i].name);
-
-    let split = e.amount / participants.length;
-
-    participants.forEach(p => {
-
-        if(p !== payer){
-            debts[p][payer] += split;
-        }
-    });
+// Everyone owes their share
+e.selected.forEach(index=>{
+let person = members[index].name;
+balances[person] -= share;
 });
 
-// STEP 2: cancel mutual debts PER PAIR (IMPORTANT FIX)
-simplifyDebts();
-renderMemberSummary();
-renderSettlement();
+// Add back what each person actually paid
+e.paid.forEach(p=>{
+let person = members[p.member].name;
+balances[person] += p.amount;
+});
+});
+renderSettlement(balances);
+renderMemberSummary(balances);
 }
 
 function simplifyDebts(){
@@ -523,110 +629,125 @@ members.forEach(b=>{
 }
 
 function clearExpenseForm(){
-document.getElementById("expName").value = "";
-document.getElementById("amount").value = "";
-document.getElementById("date").value = "";
-document.getElementById("notes").value = "";
-
-/* uncheck all participants */
-document.querySelectorAll("#participants input")
-.forEach(x => x.checked = false);
-
-/* reset payer dropdown */
-document.getElementById("payer").selectedIndex = 0;
+document.getElementById("expName").value="";
+document.getElementById("amount").value="";
+document.getElementById("date").value="";
+document.getElementById("notes").value="";
+document
+.querySelectorAll("#participants input")
+.forEach(x=>x.checked=false);
+document
+.querySelectorAll(".paid-check")
+.forEach(c=>c.checked=false);
+document
+.querySelectorAll(".paid-amount")
+.forEach(a=>{
+a.value="";
+a.disabled=true;
+});
 }
    
-function renderMemberSummary(){
-
+function renderMemberSummary(balances){
 let box=document.getElementById("memberSummary");
 box.innerHTML="";
-
-
 members.forEach((m,index)=>{
-
-
-let html = `
+let html=`
 <div class="member">
-
 <b>${m.name}</b><br>
+Balance:
+<b>
+₱${balances[m.name].toFixed(2)}
+</b>
+<br><br>
 `;
-
-
 expenses.forEach(e=>{
-
-
 if(e.selected.includes(index)){
-
-
-html += `
+let paid=0;
+e.paid.forEach(p=>{
+if(p.member===index){
+paid=p.amount;
+}
+});
+let share=e.amount/e.selected.length;
+html+=`
 <div>
-${e.name} 
-(₱${e.amount} - ${e.date || "No date"} - ${e.notes || "No note"})
+${e.name}<br>
+Paid:
+₱${paid}
+|
+Share:
+₱${share.toFixed(2)}
 </div>
+<br>
 `;
-
+}
+});
+html+="</div>";
+box.innerHTML+=html;
+});
 }
 
-
+function renderSettlement(balances){
+let box=document.getElementById("settlement");
+box.innerHTML="";
+let owes=[];
+let receives=[];
+Object.keys(balances).forEach(name=>{
+let value=balances[name];
+if(value<-0.01){
+owes.push({
+name:name,
+amount:-value
 });
-
-
-html += `
-</div>
-`;
-
-
-box.innerHTML += html;
-
-
-});
-
-
 }
-
-function renderSettlement(){
-
-let box = document.getElementById("settlement");
-box.innerHTML = "";
-
-members.forEach(from=>{
-members.forEach(to=>{
-
-let amt = debts[from.name][to.name];
-
-if(amt > 0.01){
-
-box.innerHTML += `
+if(value>0.01){
+receives.push({
+name:name,
+amount:value
+});
+}
+});
+let i=0;
+let j=0;
+while(i<owes.length && j<receives.length){
+let pay=Math.min(
+owes[i].amount,
+receives[j].amount
+);
+box.innerHTML+=`
 <p class="red">
-${from.name} pays ${to.name} ₱${amt.toFixed(2)}
+${owes[i].name}
+pays
+${receives[j].name}
+₱${pay.toFixed(2)}
+</p>
+`;
+owes[i].amount-=pay;
+receives[j].amount-=pay;
+if(owes[i].amount<0.01) i++;
+if(receives[j].amount<0.01) j++;
+}
+if(box.innerHTML===""){
+box.innerHTML=`
+<p class="green">
+Everyone is settled.
 </p>
 `;
 }
-
-});
-});
-
 }
+   
 function clearEverything(){
-
 if(!confirm("Delete all members and expenses?")) return;
-
 members = [];
 expenses = [];
 editIndex = -1;
-debts = {};
-
 localStorage.removeItem("my2L_pay_members");
 localStorage.removeItem("my2L_pay_expenses");
-
 clearExpenseForm();
-
 renderAll();
-
-}
+}  
+renderAll();
    
-renderAll();
 </script>
-
 </body>
 </html>
