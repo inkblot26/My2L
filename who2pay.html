@@ -463,24 +463,24 @@ let notes=document.getElementById("notes").value;
 
    alert("2");
    
-let paid=[];
-document
-.querySelectorAll(".paid-check")
-.forEach(check=>{
-if(check.checked){
-let amount=document.querySelector(
-`.paid-amount[data-id="${check.dataset.id}"}`
-).value;
-paid.push({
-member:Number(check.dataset.id),
-amount:Number(amount)
-});
-}
-});
+let paid = [];
 
-let totalPaid = 0;
-paid.forEach(p=>{
-totalPaid += p.amount;
+document.querySelectorAll(".paid-check").forEach(check => {
+
+    if (check.checked) {
+
+        let input = document.querySelector(
+            `.paid-amount[data-id="${check.dataset.id}"]`
+        );
+
+        alert(input);   // <-- add this
+
+        paid.push({
+            member: Number(check.dataset.id),
+            amount: Number(input.value)
+        });
+    }
+
 });
 
    alert("3");
