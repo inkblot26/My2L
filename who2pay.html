@@ -454,37 +454,45 @@ amount.value="";
 
 function addExpense(){
 
-   alert("1");
+alert("1");
 
 let name=document.getElementById("expName").value;
 let amount=Number(document.getElementById("amount").value);
 let date=document.getElementById("date").value;
 let notes=document.getElementById("notes").value;
 
-   alert("2");
-   
-let paid = [];
+alert("2");
 
-document.querySelectorAll(".paid-check").forEach(check => {
+let paid=[];
 
-    if (check.checked) {
+document.querySelectorAll(".paid-check").forEach(check=>{
 
-        let input = document.querySelector(
-            `.paid-amount[data-id="${check.dataset.id}"]`
+    if(check.checked){
+
+        let input=document.querySelector(
+        `.paid-amount[data-id="${check.dataset.id}"]`
         );
 
-        alert(input);   // <-- add this
+        alert("Input value: " + input.value);
 
         paid.push({
-            member: Number(check.dataset.id),
-            amount: Number(input.value)
+            member:Number(check.dataset.id),
+            amount:Number(input.value)
         });
+
+        alert("Added payer");
     }
 
 });
 
-   alert("3");
-   
+alert("After paid loop");
+
+let totalPaid = 0;
+paid.forEach(p=>{
+    totalPaid += p.amount;
+});
+
+alert("After totalPaid");   
 if(Math.abs(totalPaid-amount)>0.01){
 alert(
 `Total paid is ₱${totalPaid} but expense amount is ₱${amount}.`
